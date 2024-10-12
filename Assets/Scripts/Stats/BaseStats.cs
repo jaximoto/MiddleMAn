@@ -1,18 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseStats : MonoBehaviour
+[CreateAssetMenu(fileName = "BaseStats", menuName = "Stats/BaseStats")]
+public class BaseStats : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
+    [Serializable]
+    struct Relations
     {
-        
+        public string name;
+        public int affinity;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
+    public int money = 1000;
+    public int workers = 10;
+    public int productivity = 50;
+    [SerializeField] List<Relations> relations;
+   
+   
 }
