@@ -10,28 +10,38 @@ namespace Buildings
 public class Castle : Building
 {
 
-	public static string inProgressSpritePath = "Sprites/InProgress";
-	public static string completeSpritePath = "Sprites/LandTile";
+	//TODO Lots needs to  be moved to base class
+
+
+	public void StaticInit()
+	{
+		this.name = "Castle";
+		this.dims = new Vector3Int(1, 1, 0);
+		this.inProgressSpritePath = "Sprites/InProgress";
+		this.completeSpritePath = "Sprites/LandTile";
+		GenericStaticInit();
+	}
+
 
 	//This sucks so hard
 	public Castle()
 	{
-		this.name = "Castle";
-		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
-		this.completeSprite = Resources.Load<Sprite>(completeSpritePath);
+		StaticInit();
 	}
 
-	public Castle(Vector3Int _location, Tile _tile)
+
+	public Castle(Vector3Int _location, Tilemap tilemap)
 	{
 		this.location = _location;
-		this.tile = _tile;
-		this.name = "Castle";
+		this.buildCost = 1.0f;
 
-		//TODO Move all this to base class
-		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
-		this.completeSprite = Resources.Load<Sprite>(completeSpritePath);
+		StaticInit();
+		GenericInit();
 
-		this.currentSprite = this.inProgressSprite;
+		foreach (Vector3Int pos in residentCoordinates)
+		{
+			this.tiles.Add((Tile)tilemap.GetTile(pos));
+		}
 
 	}
 
@@ -40,15 +50,6 @@ public class Castle : Building
 	{
 		//Generate money or something
 	}
-
-
-	public override void AdvanceState()
-	{
-		// I should be arrested for this
-		if (this.currentSprite == this.inProgressSprite)
-			this.currentSprite = this.completeSprite;
-	}
-
 
 }
 

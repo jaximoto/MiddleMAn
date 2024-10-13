@@ -12,6 +12,7 @@ public class BuildingModel
 	public CircularList<string> buildingOptions;
 
 	public Dictionary<Vector3Int, Building> buildings;
+	public HashSet<Vector3Int> occupiedTiles;
 
 	public Building dummyBuilding;
 	public Bathhouse dummyBathhouse; //This sucks
@@ -22,6 +23,7 @@ public class BuildingModel
 	{
 		this.buildings = new Dictionary<Vector3Int, Building>();
 		this.buildingOptions = new CircularList<string>(buildingNames);
+		this.occupiedTiles = new HashSet<Vector3Int>();
 
 		this.dummyBathhouse = new Bathhouse();
 		this.dummyCastle = new Castle();
@@ -31,17 +33,27 @@ public class BuildingModel
 	{
 		//TODO: Need to interact with user stats like money
 		buildings.Add(b.location, b);
+
+		foreach(Vector3Int pos in b.residentCoordinates)
+		{
+			occupiedTiles.Add(pos);
+		}
 	}
 
 	public void RemoveBuilding(Building b)
 	{
 		buildings.Remove(b.location);
+
+		foreach(Vector3Int pos in b.residentCoordinates)
+		{
+			occupiedTiles.Remove(pos);
+		}
 	}
 
 	//TODO shit name
 	public bool CheckForBuilding(Vector3Int pos)
 	{
-		return buildings.ContainsKey(pos);
+		return occupiedTiles.Contains(pos);
 	}
 
 	public void EquipBuilding()

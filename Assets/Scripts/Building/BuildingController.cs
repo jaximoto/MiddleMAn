@@ -26,6 +26,8 @@ public class BuildingController : MonoBehaviour
 
 	void Update()
 	{
+		HighlightTile();
+
 		EquipBuilding();
 
 		if (Input.GetMouseButtonDown(0)) //TODO Need some way to make it so the fucking player cant just spam click like a fucking monkey
@@ -33,6 +35,13 @@ public class BuildingController : MonoBehaviour
 			//TODO: Check to see if can click by talking to other systems
 			HandleClick();
 		}
+	}
+
+
+	public void HighlightTile()
+	{
+		Vector3Int cell = GetTileCoordinates();
+		view.HighlightTile(cell);
 	}
 
 
@@ -54,19 +63,19 @@ public class BuildingController : MonoBehaviour
 	}
 
 
-	public void MakeBuilding(Vector3Int pos, Tile tile)
+	public void MakeBuilding(Vector3Int pos)
 	{
 		// This string checking thing fucking horrific
 		string currentBuildingName = model.buildingOptions.Current();
 		if (currentBuildingName.Equals("Bathhouse"))
 		{
-			Building b = new Bathhouse(pos, tile);
+			Building b = new Bathhouse(pos, tilemap);
 			model.AddBuilding(b);
 			view.UpdateBuilding(b);
 		}
 		if (currentBuildingName.Equals("Castle"))
 		{
-			Building b = new Castle(pos, tile);
+			Building b = new Castle(pos, tilemap);
 			model.AddBuilding(b);
 			view.UpdateBuilding(b);
 		}
@@ -81,8 +90,6 @@ public class BuildingController : MonoBehaviour
 
 		if (!tilemap.HasTile(clickedCell)) return;
 
-		Tile tile = (Tile)tilemap.GetTile(clickedCell);
-
 		//Check to see if building on tile
 		if (model.CheckForBuilding(clickedCell))
 		{
@@ -91,7 +98,7 @@ public class BuildingController : MonoBehaviour
 		else 
 		{
 			// No building here, call logic to add one 
-			MakeBuilding(clickedCell, tile);
+			MakeBuilding(clickedCell);
 		}
 		
 	}
@@ -108,9 +115,11 @@ public class BuildingController : MonoBehaviour
 
 	public void AdvanceBuildingStates()
 	{
+		//TODO
+		float progress = 0.5f;
 		foreach (Building b in model.buildings.Values)
 		{
-			b.AdvanceState();
+			b.AdvanceState(progress);
 			view.UpdateBuilding(b); 
 		}
 	}

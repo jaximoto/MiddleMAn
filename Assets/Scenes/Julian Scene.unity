@@ -636,15 +636,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1319504002601165887, guid: b4cee38bc759540e9ae1d099a9315060, type: 3}
       propertyPath: m_Color.b
-      value: 0.9339623
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1319504002601165887, guid: b4cee38bc759540e9ae1d099a9315060, type: 3}
       propertyPath: m_Color.g
-      value: 0.9339623
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1319504002601165887, guid: b4cee38bc759540e9ae1d099a9315060, type: 3}
       propertyPath: m_Color.r
-      value: 0.9339623
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1319504002601165887, guid: b4cee38bc759540e9ae1d099a9315060, type: 3}
       propertyPath: m_TileColorArray.Array.size
