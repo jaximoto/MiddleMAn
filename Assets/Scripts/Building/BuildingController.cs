@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+using Utils;
+using Buildings;
+
 using static BuildingView;
 using static BuildingModel;
 
-using static Bathhouse;//TODO make it so we dont have to include all building types
 
 public class BuildingController : MonoBehaviour
 {
 	public BuildingModel model;
 	public BuildingView view;
 	public Tilemap tilemap;
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +26,52 @@ public class BuildingController : MonoBehaviour
 
 	void Update()
 	{
+		EquipBuilding();
+
 		if (Input.GetMouseButtonDown(0)) //TODO Need some way to make it so the fucking player cant just spam click like a fucking monkey
 		{
-			//TODO: How to get building type from user
-			//TODO: Differnet typyes of builigngs
+			//TODO: Check to see if can click by talking to other systems
 			HandleClick();
 		}
+	}
+
+
+	public void EquipBuilding()
+	{
+		//Scroll up
+		if (Input.mouseScrollDelta.y > 0)
+		{
+			model.buildingOptions.Forward();
+		} //Scroll down
+		else if (Input.mouseScrollDelta.y < 0)
+		{
+			model.buildingOptions.Backward();
+		}
+
+		model.EquipBuilding();
+
+		view.UpdateEquippedBuilding(model.dummyBuilding);
+	}
+
+
+	public void MakeBuilding(Vector3Int pos, Tile tile)
+	{
+		// This string checking thing fucking horrific
+		string currentBuildingName = model.buildingOptions.Current();
+		if (currentBuildingName.Equals("Bathhouse"))
+		{
+			Building b = new Bathhouse(pos, tile);
+			model.AddBuilding(b);
+			view.UpdateBuilding(b);
+		}
+		if (currentBuildingName.Equals("Castle"))
+		{
+			Building b = new Castle(pos, tile);
+			model.AddBuilding(b);
+			view.UpdateBuilding(b);
+		}
+		//etc...
+
 	}
 
 
@@ -48,11 +91,7 @@ public class BuildingController : MonoBehaviour
 		else 
 		{
 			// No building here, call logic to add one 
-			Bathhouse b = new Bathhouse(clickedCell, tile);
-			model.AddBuilding(b);
-
-			// Update tile (nice fucking comment)
-			view.UpdateBuilding(b);
+			MakeBuilding(clickedCell, tile);
 		}
 		
 	}

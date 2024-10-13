@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using static Building;
+using Utils;
+using Buildings;
 
 
 public class BuildingModel
 {
+	public string[] buildingNames = {"Bathhouse", "Castle"};
+	public CircularList<string> buildingOptions;
 
 	public Dictionary<Vector3Int, Building> buildings;
+
+	public Building dummyBuilding;
+	public Bathhouse dummyBathhouse; //This sucks
+	public Castle dummyCastle;
+
 
 	public BuildingModel()
 	{
 		this.buildings = new Dictionary<Vector3Int, Building>();
+		this.buildingOptions = new CircularList<string>(buildingNames);
+
+		this.dummyBathhouse = new Bathhouse();
+		this.dummyCastle = new Castle();
 	}
 
 	public void AddBuilding(Building b)
@@ -31,4 +43,18 @@ public class BuildingModel
 	{
 		return buildings.ContainsKey(pos);
 	}
+
+	public void EquipBuilding()
+	{
+		Debug.Log(buildingOptions.Current());
+		if (buildingOptions.Current().Equals("Bathhouse"))
+		{
+			dummyBuilding = dummyBathhouse;
+		} 
+		else if (buildingOptions.Current().Equals("Castle"))
+		{
+			dummyBuilding = dummyCastle;
+		} 
+	}
+
 }

@@ -1,32 +1,31 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-namespace Buildings
+namespace Buildings 
+{
+public class Castle : Building
 {
 
-public class Bathhouse : Building
-{
-
-	//TODO Lots needs to  be moved to base class
 	public static string inProgressSpritePath = "Sprites/InProgress";
-	public static string completeSpritePath = "Sprites/SmallCastle";
+	public static string completeSpritePath = "Sprites/LandTile";
 
 	//This sucks so hard
-	public Bathhouse()
+	public Castle()
 	{
-		this.name = "Bathhouse";
+		this.name = "Castle";
 		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
 		this.completeSprite = Resources.Load<Sprite>(completeSpritePath);
 	}
 
-	public Bathhouse(Vector3Int _location, Tile _tile)
+	public Castle(Vector3Int _location, Tile _tile)
 	{
 		this.location = _location;
 		this.tile = _tile;
-		this.name = "Bathhouse";
+		this.name = "Castle";
 
 		//TODO Move all this to base class
 		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);

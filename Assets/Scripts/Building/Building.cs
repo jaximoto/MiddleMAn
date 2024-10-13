@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
+namespace Buildings
+{
 public abstract class Building
 {
 	public enum Status
@@ -13,6 +15,8 @@ public abstract class Building
 	}
 
 	public Status status;
+
+	public string name;
 
 	public float cost;
 	public float buildTime;
@@ -30,4 +34,5 @@ public abstract class Building
 	public Tile tile;
 
 
+}
 }
