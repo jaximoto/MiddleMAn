@@ -59,11 +59,27 @@ public abstract class Building
 
 	}
 
+
+	public List<Vector3Int> EnumerateCoordinates(Vector3Int pos)
+	{
+		List<Vector3Int> result = new List<Vector3Int>();
+		for (int i=0; i<dims.y; i++)
+		{
+			for (int j=0; j<dims.x; j++)
+			{
+				result.Add(new Vector3Int(pos.x + j, pos.y - i, 0));
+			}
+		}
+		return result;
+	}
+
+
 	public void GenericStaticInit()
 	{
 		this.inProgressSprites = new List<Sprite>();
 		this.completeSprites = new List<Sprite>();
 	}
+
 
 	public void GenericInit()
 	{

@@ -94,14 +94,30 @@ public class BuildingController : MonoBehaviour
 	}
 
 
+	public bool CheckForTiles(List<Vector3Int> coords)
+	{
+		foreach (Vector3Int coord in coords)
+		{
+			if (!tilemap.HasTile(coord))
+				return false;
+		}
+		return true;
+	}
+		
+
 	public void HandleClick()
 	{
+
 		Vector3Int clickedCell = GetTileCoordinates();
 
-		if (!tilemap.HasTile(clickedCell)) return;
+		// Coordinates this building will occupy
+		List<Vector3Int> coords = model.buildingsMap[model.equippedBuildingName].EnumerateCoordinates(clickedCell);
 
-		//Check to see if building on tile
-		if (model.CheckForBuilding(clickedCell))
+		// Do nothing if building spills outside of tilemap
+		if (!CheckForTiles(coords)) return;
+
+		//Check to see if building spills onto an occupied tile 
+		if (model.CheckForBuilding(coords))
 		{
 			//If yes, do nothing/bring up some UI thing
 		}
