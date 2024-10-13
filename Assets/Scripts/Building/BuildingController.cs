@@ -8,6 +8,7 @@ using Buildings;
 
 using static BuildingView;
 using static BuildingModel;
+using static StatsManager;
 
 
 public class BuildingController : MonoBehaviour
@@ -15,6 +16,7 @@ public class BuildingController : MonoBehaviour
 	public BuildingModel model;
 	public BuildingView view;
 	public Tilemap tilemap;
+	public StatsManager statsManager;
 
 
     // Start is called before the first frame update
@@ -72,15 +74,23 @@ public class BuildingController : MonoBehaviour
 			Building b = new Bathhouse(pos, tilemap);
 			model.AddBuilding(b);
 			view.UpdateBuilding(b);
+			MakeBuildingModifyStats(b);
 		}
 		if (currentBuildingName.Equals("Castle"))
 		{
 			Building b = new Castle(pos, tilemap);
 			model.AddBuilding(b);
 			view.UpdateBuilding(b);
+			MakeBuildingModifyStats(b);
 		}
 		//etc...
 
+	}
+
+
+	public void MakeBuildingModifyStats(Building b)
+	{
+		statsManager.ChangeStat(StatType.money, -b.moneyCost);
 	}
 
 
@@ -113,10 +123,16 @@ public class BuildingController : MonoBehaviour
 	}	
 
 
+	private float ComputeProgress()
+	{
+		return statsManager.GetStatValue(StatType.workers) * statsManager.GetStatValue(StatType.productivity);
+	}
+
+
 	public void AdvanceBuildingStates()
 	{
 		//TODO
-		float progress = 0.5f;
+		float progress = ComputeProgress();
 		foreach (Building b in model.buildings.Values)
 		{
 			b.AdvanceState(progress);

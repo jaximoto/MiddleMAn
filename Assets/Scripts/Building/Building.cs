@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+using static StatsManager;
+
 
 namespace Buildings
 {
-
 public abstract class Building
 {
 	public enum Status
@@ -19,7 +20,7 @@ public abstract class Building
 
 	public string name;
 
-	public float moneyCost;
+	public int moneyCost;
 	public float buildCost;
 	public float buildProgress;
 
@@ -76,7 +77,6 @@ public abstract class Building
 
 		for (int i=0; i<residentCoordinates.Count; i++)
 		{
-
 			Sprite s = Resources.Load<Sprite>(inProgressSpritePath);
 			this.inProgressSprites.Add(s);
 		}
@@ -99,6 +99,7 @@ public abstract class Building
 
 		if (this.status == Status.done)
 			this.currentSprites = this.completeSprites;
+
 	}
 
 }

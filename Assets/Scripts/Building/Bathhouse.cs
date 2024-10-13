@@ -10,13 +10,13 @@ namespace Buildings
 public class Bathhouse : Building
 {
 
-	//TODO Lots needs to  be moved to base class
 	void StaticInit()
 	{
 		this.name = "Bathhouse";
 		this.dims = new Vector3Int(2, 2, 0);
 		this.inProgressSpritePath = "Sprites/InProgress";
 		this.completeSpritePath = "Sprites/SmallCastle";
+		this.moneyCost = 100;
 		GenericStaticInit();
 	}
 
@@ -38,7 +38,6 @@ public class Bathhouse : Building
 
 		foreach (Vector3Int pos in residentCoordinates)
 		{
-			Debug.Log(pos);
 			this.tiles.Add((Tile)tilemap.GetTile(pos));
 		}
 

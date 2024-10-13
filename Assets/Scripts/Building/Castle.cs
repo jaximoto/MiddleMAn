@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +9,6 @@ namespace Buildings
 public class Castle : Building
 {
 
-	//TODO Lots needs to  be moved to base class
-
 
 	public void StaticInit()
 	{
@@ -19,6 +16,7 @@ public class Castle : Building
 		this.dims = new Vector3Int(1, 1, 0);
 		this.inProgressSpritePath = "Sprites/InProgress";
 		this.completeSpritePath = "Sprites/LandTile";
+		this.moneyCost = 50;
 		GenericStaticInit();
 	}
 
