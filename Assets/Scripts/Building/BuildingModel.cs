@@ -12,6 +12,7 @@ public class BuildingModel
 	public CircularList<string> buildingOptions;
 
 	public Dictionary<Vector3Int, Building> buildings;
+	public Dictionary<string, Building> buildingsMap;
 	public HashSet<Vector3Int> occupiedTiles;
 
 	public Building dummyBuilding;
@@ -27,6 +28,12 @@ public class BuildingModel
 
 		this.dummyBathhouse = new Bathhouse();
 		this.dummyCastle = new Castle();
+
+		this.buildingsMap = new()
+		{
+			{ buildingNames[0], this.dummyBathhouse},
+			{ buildingNames[1], this.dummyCastle}
+		};
 	}
 
 	public void AddBuilding(Building b)
