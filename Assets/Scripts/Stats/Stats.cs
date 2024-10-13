@@ -1,25 +1,67 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using System.Data;
 
-public class Stats
+public enum StatType
 {
-    public int money = 1000;
-    public int workers = 10;
-    public int productivity = 50;
+    money,
+    workers,
+    productivity,
+    relation
+}
 
-    public List<Relation> relationList = new();
+public enum RelationType
+{
+    King,
+    God,
+    Workers
+}
+public abstract class AbstractStats 
+{
+    
+    
+    public StatType Type { get; }
 
-    Stats(BaseStats baseStats)
+    protected AbstractStats(StatType statType)
     {
-        money = baseStats.money;
-        workers = baseStats.workers;
-        productivity = baseStats.productivity;
-        
-        for (int i = 0; i < baseStats.relations.Count; i++)
-        {
+        this.Type = statType;
+    }
 
-            relationList.Add(new Relation(baseStats.relations[i].name, baseStats.relations[i].affinity));
-        }
+    public abstract void ChangeValue(int newValue);
+    
+    
+   
+}
+
+public class IntStat : AbstractStats
+{
+    public int Value { get;  protected set; }
+
+    public IntStat(StatType statType, int initialValue) : base(statType)
+    {
+        this.Value = initialValue;
+    }
+
+    public override void ChangeValue( int newValue)
+    {
+        this.Value += newValue;
+    }
+    
+}
+
+// Class for stats that are clamped from 0 - 100
+public class ClampedStat : IntStat
+{
+    public ClampedStat(StatType type, int initialValue) : base(type, initialValue)
+    {
+        this.Value = Math.Clamp(initialValue, 0, 100);
+    }
+    public override void ChangeValue( int newValue)
+    {
+        newValue += this.Value;
+        this.Value = Math.Clamp(newValue, 0, 100);
     }
 }
+
+
+
+
