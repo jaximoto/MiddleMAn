@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,28 +9,37 @@ namespace Buildings
 public class Castle : Building
 {
 
-	public static string inProgressSpritePath = "Sprites/InProgress";
-	public static string completeSpritePath = "Sprites/LandTile";
+
+	public void StaticInit()
+	{
+		this.name = "Castle";
+		this.dims = new Vector3Int(1, 1, 0);
+		this.inProgressSpritePath = "Sprites/InProgress";
+		this.completeSpritePath = "Sprites/LandTile";
+		this.moneyCost = 50;
+		GenericStaticInit();
+	}
+
 
 	//This sucks so hard
 	public Castle()
 	{
-		this.name = "Castle";
-		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
-		this.completeSprite = Resources.Load<Sprite>(completeSpritePath);
+		StaticInit();
 	}
 
-	public Castle(Vector3Int _location, Tile _tile)
+
+	public Castle(Vector3Int _location, Tilemap tilemap)
 	{
 		this.location = _location;
-		this.tile = _tile;
-		this.name = "Castle";
+		this.buildCost = 1.0f;
 
-		//TODO Move all this to base class
-		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
-		this.completeSprite = Resources.Load<Sprite>(completeSpritePath);
+		StaticInit();
+		GenericInit();
 
-		this.currentSprite = this.inProgressSprite;
+		foreach (Vector3Int pos in residentCoordinates)
+		{
+			this.tiles.Add((Tile)tilemap.GetTile(pos));
+		}
 
 	}
 
@@ -40,15 +48,6 @@ public class Castle : Building
 	{
 		//Generate money or something
 	}
-
-
-	public override void AdvanceState()
-	{
-		// I should be arrested for this
-		if (this.currentSprite == this.inProgressSprite)
-			this.currentSprite = this.completeSprite;
-	}
-
 
 }
 

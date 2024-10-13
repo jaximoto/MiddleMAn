@@ -10,29 +10,36 @@ namespace Buildings
 public class Bathhouse : Building
 {
 
-	//TODO Lots needs to  be moved to base class
-	public static string inProgressSpritePath = "Sprites/InProgress";
-	public static string completeSpritePath = "Sprites/SmallCastle";
+	void StaticInit()
+	{
+		this.name = "Bathhouse";
+		this.dims = new Vector3Int(2, 2, 0);
+		this.inProgressSpritePath = "Sprites/InProgress";
+		this.completeSpritePath = "Sprites/SmallCastle";
+		this.moneyCost = 100;
+		GenericStaticInit();
+	}
+
 
 	//This sucks so hard
 	public Bathhouse()
 	{
-		this.name = "Bathhouse";
-		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
-		this.completeSprite = Resources.Load<Sprite>(completeSpritePath);
+		StaticInit();
 	}
 
-	public Bathhouse(Vector3Int _location, Tile _tile)
+
+	public Bathhouse(Vector3Int _location, Tilemap tilemap)
 	{
 		this.location = _location;
-		this.tile = _tile;
-		this.name = "Bathhouse";
+		this.buildCost = 1.0f;
 
-		//TODO Move all this to base class
-		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
-		this.completeSprite = Resources.Load<Sprite>(completeSpritePath);
+		StaticInit();
+		GenericInit();
 
-		this.currentSprite = this.inProgressSprite;
+		foreach (Vector3Int pos in residentCoordinates)
+		{
+			this.tiles.Add((Tile)tilemap.GetTile(pos));
+		}
 
 	}
 
@@ -40,14 +47,6 @@ public class Bathhouse : Building
 	public override void DayAction()
 	{
 		//Generate money or something
-	}
-
-
-	public override void AdvanceState()
-	{
-		// I should be arrested for this
-		if (this.currentSprite == this.inProgressSprite)
-			this.currentSprite = this.completeSprite;
 	}
 
 

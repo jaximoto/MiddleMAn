@@ -31,8 +31,11 @@ public class BuildingView : MonoBehaviour
 	public void UpdateBuilding(Building b)
 	{
 		//This is so fuckign stupid
-		b.tile.sprite = b.currentSprite;
-		tilemap.RefreshTile(b.location);
+		for (int i=0; i<b.tiles.Count; i++)
+		{
+			b.tiles[i].sprite = b.currentSprites[i];
+			tilemap.RefreshTile(b.residentCoordinates[i]);
+		}
 	}
 
 
@@ -40,5 +43,11 @@ public class BuildingView : MonoBehaviour
 	{
 		equippedBuildingName.text = b.name;
 		equippedBuildingRenderer.sprite = b.completeSprite;
+	}
+
+	
+	public void HighlightTile(Vector3Int cell)
+	{
+		tilemap.SetColor(cell, Color.blue);
 	}
 }
