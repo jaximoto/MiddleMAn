@@ -1,13 +1,21 @@
-﻿public class Relation
+﻿using System;
+
+public class Relation
 {
-    public readonly string name;
+    
 
     // 0 - 100
-    public int affinity;
+    public int affinity { get; private set; }
 
-    public Relation(string name, int affinity)
+    public Relation(int affinity)
     {
-        this.name = name;
-        this.affinity = affinity;
+        
+        this.affinity = Math.Clamp(affinity, 0, 100);
+    }
+
+    public void ChangeAffinity(int affinity)
+    {
+        this.affinity += affinity;
+        this.affinity = Math.Clamp(this.affinity, 0, 100);
     }
 }

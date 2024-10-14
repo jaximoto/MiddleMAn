@@ -8,7 +8,7 @@ using TMPro;
 public class CalendarView : MonoBehaviour
 {
 	public TextMeshProUGUI dayCounter;
-	public TextMeshProUGUI dayAdvanceText;
+	public TextMeshProUGUI notificationText;
 
 
 	public void UpdateDay(int newDay)
@@ -20,7 +20,7 @@ public class CalendarView : MonoBehaviour
 
 	private IEnumerator DisplayNextDayText(int day)
 	{
-		dayAdvanceText.text = $"Day {day} has ended...";
+		notificationText.text = $"Day {day} has ended...";
 
 		float dur = 0.0f;
 		while (dur < 1.0f)
@@ -29,7 +29,7 @@ public class CalendarView : MonoBehaviour
 			dur += Time.deltaTime;
 		}
 
-		dayAdvanceText.text = "";
+		notificationText.text = "";
 
 	}
 
