@@ -5,6 +5,7 @@ public enum StatType
 {
     money,
     workers,
+    availableWorkers,
     productivity,
     relation
 }

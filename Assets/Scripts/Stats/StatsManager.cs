@@ -11,6 +11,7 @@ public class StatsManager : MonoBehaviour
     // Starting stats
     public int money;
     public int workers;
+    public int availableWorkers;
     public int productivity;
     public int kingAffinity;
 
@@ -29,7 +30,9 @@ public class StatsManager : MonoBehaviour
 
         playerStats.Add(StatType.money, new IntStat(StatType.money, money));
         playerStats.Add(StatType.workers, new IntStat(StatType.workers, workers));
+        playerStats.Add(StatType.availableWorkers, new IntStat(StatType.availableWorkers, availableWorkers));
         playerStats.Add(StatType.productivity, new ClampedStat(StatType.productivity, productivity));
+
         
     }
 
