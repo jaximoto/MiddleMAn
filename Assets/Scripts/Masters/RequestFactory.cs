@@ -4,7 +4,19 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+public enum ImportanceFactor
+{
+    Negligible = 1,    // Level 1
+    Unimportant = 2,       // Level 2
+    Low = 3,           // Level 3
+    Slight = 4,        // Level 4
+    Moderate = 5,      // Level 5
+    Substantial = 6,    // Level 6
+    High = 7,          // Level 7
+    Severe = 8,      // Level 8
+    Critical = 9,      // Level 9
+    Maximum = 10       // Level 10
+}
 public class GenericRequest
 {
     public float buildTime;
@@ -57,6 +69,7 @@ public class GenericRequest
             return (ImportanceFactor)result;
         }
         
+
     }
 
     public int GetDeadline(RequestWeigths requestWeights, ImportanceFactor importance)
@@ -81,7 +94,18 @@ public class GenericRequest
         {
             return result;
         }
-    } 
+    }
+    public int GetReward()
+    {
+        int importanceMultiplier = (int)importance;
+        return 5 * importanceMultiplier;
+    }
+
+    public int GetPenalty()
+    {
+        int importanceMultiplier = (int)importance;
+        return -5 * importanceMultiplier;
+    }
 }
 
 public class KingRequest : GenericRequest
@@ -106,6 +130,7 @@ public class GodRequest : GenericRequest
     }
 }
 
+/*
 public abstract class RequestFactory
 {
     public abstract GenericRequest CreateRequest();
@@ -150,6 +175,34 @@ public class GodRequestFactory : RequestFactory
     public override GenericRequest CreateRequest()
     {
         return new GodRequest(this.buildInfo, this.requestWeigths, this.schedulingParams);
+    }
+}
+*/
+
+public class RequestFactory
+{
+    public GenericRequest CreateRequestWithRelation(Building buildingInfo, RequestWeigths requestWeigths,
+        SchedulingParams schedulingParams, RelationType relation)
+    {
+       
+        
+        if (relation == RelationType.King)
+        {
+            return new KingRequest(buildingInfo, requestWeigths, schedulingParams);
+        }
+        
+        else if ( relation == RelationType.God)
+        {
+            return new GodRequest(buildingInfo, requestWeigths, schedulingParams);
+        }
+                
+        else
+        {
+            Debug.LogError($"Error, Request Factory doesn't recognize: {relation}");
+            return null;
+        }
+           
+        
     }
 }
 
