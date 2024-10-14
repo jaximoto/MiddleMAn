@@ -15,8 +15,10 @@ public class Castle : Building
 		this.name = "Castle";
 		this.dims = new Vector3Int(1, 1, 0);
 		this.inProgressSpritePath = "Sprites/InProgress";
-		this.completeSpritePath = "Sprites/LandTile";
-		this.moneyCost = 50;
+		this.completeSpritePath = "Sprites/SmallCastle";
+		this.moneyCost = 10000;
+		this.buildCost = 500f;
+
 		GenericStaticInit();
 	}
 
@@ -31,7 +33,6 @@ public class Castle : Building
 	public Castle(Vector3Int _location, Tilemap tilemap)
 	{
 		this.location = _location;
-		this.buildCost = 1.0f;
 
 		StaticInit();
 		GenericInit();

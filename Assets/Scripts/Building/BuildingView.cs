@@ -46,8 +46,15 @@ public class BuildingView : MonoBehaviour
 	}
 
 	
-	public void HighlightTile(Vector3Int cell)
+	public void HighlightTile(Vector3Int cell, Vector3Int lastHighlightedCell, Color lastColor)
 	{
+		if (lastHighlightedCell == cell)
+			return;
+
+		tilemap.SetTileFlags(cell, TileFlags.None);
 		tilemap.SetColor(cell, Color.blue);
+
+		tilemap.SetTileFlags(lastHighlightedCell, TileFlags.None);
+		tilemap.SetColor(lastHighlightedCell, lastColor);
 	}
 }

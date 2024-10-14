@@ -10,6 +10,7 @@ namespace Buildings
 {
 public abstract class Building
 {
+
 	public enum Status
 	{
 		inProgress,
@@ -78,6 +79,10 @@ public abstract class Building
 	{
 		this.inProgressSprites = new List<Sprite>();
 		this.completeSprites = new List<Sprite>();
+
+		this.completeSprite = Resources.Load<Sprite>(completeSpritePath+"Entire");
+		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
+
 	}
 
 
@@ -93,8 +98,7 @@ public abstract class Building
 
 		for (int i=0; i<residentCoordinates.Count; i++)
 		{
-			Sprite s = Resources.Load<Sprite>(inProgressSpritePath);
-			this.inProgressSprites.Add(s);
+			this.inProgressSprites.Add(this.inProgressSprite);
 		}
 
 		this.currentSprites = this.inProgressSprites;
@@ -115,7 +119,6 @@ public abstract class Building
 
 		if (this.status == Status.done)
 			this.currentSprites = this.completeSprites;
-
 	}
 
 }

@@ -20,6 +20,9 @@ public class BuildingModel
 	public Castle dummyCastle;
 
 	public string equippedBuildingName;
+	
+	public Vector3Int lastHighlightedCell;
+	public Color lastCellColor;
 
 
 	public BuildingModel()
@@ -36,6 +39,8 @@ public class BuildingModel
 			{ buildingNames[0], this.dummyBathhouse},
 			{ buildingNames[1], this.dummyCastle}
 		};
+
+		this.lastHighlightedCell = new Vector3Int(-100000000, -10000000, 0);
 
 	}
 
