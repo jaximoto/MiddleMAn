@@ -5,18 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public interface IRequest
-{
-    ImportanceFactor GetImportance(float timeWeight, float moneyWeight);
-    int GetDeadline(float timeWeight, float moneyWeight, float importanceFactor);
-
-    
-
-    
-}
-
-public struct BuildingConstraints
-public class GenericRequest : IRequest
+public class GenericRequest
 {
     public float buildTime;
     public float maxBuildTime;
@@ -32,26 +21,25 @@ public class GenericRequest : IRequest
 
     public int deadline;
 
-    public GenericRequest(float timeWeight, float moneyWeight, 
-        float importanceWeight, float buildTime,float maxBuildTime, int cost,
-        int maxCost, int currentDay, int maxDeadline, RelationType relationType)
+    public GenericRequest(Building buildingInfo, RequestWeigths requestWeigths,
+        SchedulingParams schedulingParams, RelationType relationType)
     {
-        this.buildTime = buildTime;
-        this.maxBuildTime = maxBuildTime;
-        this.cost = cost;
-        this.maxCost = maxCost;
-        this.currentDay = currentDay;
-        this.maxDeadline = maxDeadline;
-        this.importance = GetImportance(timeWeight, moneyWeight);
+        this.buildTime = buildingInfo.buildCost;
+        this.maxBuildTime = BuildingConstraints.MaxBuildTime;
+        this.cost = buildingInfo.moneyCost;
+        this.maxCost = BuildingConstraints.MaxCost;
+        this.currentDay = schedulingParams.currentDay;
+        this.maxDeadline = schedulingParams.maxDeadline;
+        this.importance = GetImportance(requestWeigths);
         this.relationType = relationType;
-        this.deadline = GetDeadline(timeWeight, moneyWeight, importanceWeight);
+        this.deadline = GetDeadline(requestWeigths, this.importance);
     }
 
     
-    public ImportanceFactor GetImportance(float timeWeight, float moneyWeight)
+    public ImportanceFactor GetImportance(RequestWeigths requestWeigths)
     {
-        float timeValue = timeWeight * (buildTime / maxBuildTime);
-        float costValue = moneyWeight * (cost / maxCost);
+        float timeValue = requestWeigths.time * (buildTime / maxBuildTime);
+        float costValue = requestWeigths.money * (cost / maxCost);
 
         int result =  Mathf.CeilToInt(1 + 9 * (timeValue + costValue));
 
@@ -71,11 +59,11 @@ public class GenericRequest : IRequest
         
     }
 
-    public int GetDeadline(float timeWeight, float moneyWeight, float importanceFactor)
+    public int GetDeadline(RequestWeigths requestWeights, ImportanceFactor importance)
     {
-        float timeValue = timeWeight * (buildTime / maxBuildTime);
-        float costValue = moneyWeight * (cost / maxCost);
-        float importanceValue = importanceFactor * (importanceFactor / 10);
+        float timeValue = requestWeights.time * (buildTime / maxBuildTime);
+        float costValue = requestWeights.money * (cost / maxCost);
+        float importanceValue = requestWeights.importance * ((int)importance / 10);
         int deadlineValue = maxDeadline - currentDay;
 
         int result = Mathf.CeilToInt(currentDay + (timeValue + costValue + importanceValue) * deadlineValue);
@@ -98,18 +86,71 @@ public class GenericRequest : IRequest
 
 public class KingRequest : GenericRequest
 {
-    public KingRequest(float timeWeight, float moneyWeight, float importanceWeight,
-        float buildTime, float maxBuildTime, int cost, int maxCost, int currentDay, int maxDeadline)
-        : base(timeWeight, moneyWeight, importanceWeight, buildTime,
-            maxBuildTime, cost, maxCost, currentDay, maxDeadline, RelationType.King)
+    public KingRequest(Building buildingInfo, RequestWeigths requestWeigths,
+        SchedulingParams schedulingParams)
+        : base(buildingInfo, requestWeigths, schedulingParams, RelationType.King)
     {
-
+        // Fuck you
     }
     
+    
 }
-public abstract class RequestFactory
+
+public class GodRequest : GenericRequest
 {
-    public RequestFactory(building) 
+    public GodRequest(Building buildingInfo, RequestWeigths requestWeigths,
+        SchedulingParams schedulingParams)
+        : base(buildingInfo, requestWeigths, schedulingParams, RelationType.God)
     {
+        // Eat 
     }
 }
+
+public abstract class RequestFactory
+{
+    public abstract GenericRequest CreateRequest();
+
+    public Building buildInfo;
+    public RequestWeigths requestWeigths;
+    public SchedulingParams schedulingParams;
+
+
+    public RequestFactory(Building buildingInfo, RequestWeigths requestWeigths,
+        SchedulingParams schedulingParams)
+    {
+        this.buildInfo = buildingInfo;
+        this.requestWeigths = requestWeigths;
+        this.schedulingParams = schedulingParams;
+    }
+  
+}
+
+public class KingRequestFactory : RequestFactory
+{
+    public KingRequestFactory(Building buildingInfo, RequestWeigths requestWeigths,
+        SchedulingParams schedulingParams) : base(buildingInfo, requestWeigths, schedulingParams)
+    {
+        // My
+    }
+
+    public override GenericRequest CreateRequest()
+    {
+        return new KingRequest(this.buildInfo, this.requestWeigths, this.schedulingParams);
+    }
+}
+
+public class GodRequestFactory : RequestFactory
+{
+    public GodRequestFactory(Building buildingInfo, RequestWeigths requestWeigths,
+        SchedulingParams schedulingParams) : base(buildingInfo, requestWeigths, schedulingParams)
+    {
+        // Dick
+    }
+
+    public override GenericRequest CreateRequest()
+    {
+        return new GodRequest(this.buildInfo, this.requestWeigths, this.schedulingParams);
+    }
+}
+
+

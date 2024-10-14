@@ -8,6 +8,8 @@ public static class BuildingConstraints
     public static int MaxCost = 10000;
 }
 
+
+
 public class RequestWeigths
 {
     public float time;
@@ -24,12 +26,12 @@ public class RequestWeigths
 
 public class SchedulingParams
 {
-    int currentDay;
-    int maxDeadlineDay;
+    public int currentDay;
+    public int maxDeadline;
 
     public SchedulingParams(int currentDay, int maxDeadlineDay)
     {
         this.currentDay = currentDay;
-        this.maxDeadlineDay = maxDeadlineDay;
+        this.maxDeadline = maxDeadlineDay;
     }
 }
