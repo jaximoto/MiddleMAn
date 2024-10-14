@@ -30,12 +30,11 @@ public abstract class Building
 	public Vector3Int location;
 	public Vector3Int dims;
 
-	public string inProgressSpritePath;
-	public string completeSpritePath;
+	public string inProgressTilePath;
+	public string completeTilePath;
 
-	public Sprite inProgressSprite;
-	public Sprite completeSprite;
-	public Sprite currentSprite;
+	public Tile completeTile;
+	public Tile inProgressTile;
 
 	public List<Tile> tiles;
 
@@ -43,9 +42,9 @@ public abstract class Building
 	//This should proabbly be one list of tuples but showuld be fine
 	//This is fucking inexcusable
 	public List<Vector3Int> residentCoordinates;
-	public List<Sprite> completeSprites;
-	public List<Sprite> currentSprites;
-	public List<Sprite> inProgressSprites;
+	public List<Tile> completeTiles;
+	public List<Tile> currentTiles;
+	public List<Tile> inProgressTiles;
 
 	public void SetResidentCoordinates()
 	{
@@ -77,32 +76,39 @@ public abstract class Building
 
 	public void GenericStaticInit()
 	{
-		this.inProgressSprites = new List<Sprite>();
-		this.completeSprites = new List<Sprite>();
+		this.inProgressTiles = new List<Tile>();
+		this.completeTiles = new List<Tile>();
 
-		this.completeSprite = Resources.Load<Sprite>(completeSpritePath+"Entire");
-		this.inProgressSprite = Resources.Load<Sprite>(inProgressSpritePath);
+		this.completeTile = Resources.Load<Tile>(completeTilePath+"Entire");
+		this.inProgressTile = Resources.Load<Tile>(inProgressTilePath);
 
 	}
 
 
 	public void GenericInit()
 	{
-
 		this.tiles = new List<Tile>();
 
 		SetResidentCoordinates();
 
-		IList<Sprite> sList = Resources.LoadAll<Sprite>(completeSpritePath);
-		this.completeSprites.AddRange(sList);
+		if (residentCoordinates.Count == 1)
+		{
+			this.completeTiles.Add(this.completeTile);
+		}
+		else 
+		{
+			for (int i=0; i<residentCoordinates.Count; i++)
+			{
+				this.completeTiles.Add(Resources.Load<Tile>(completeTilePath+$"_{i}"));
+			}
+		}
 
 		for (int i=0; i<residentCoordinates.Count; i++)
 		{
-			this.inProgressSprites.Add(this.inProgressSprite);
+			this.inProgressTiles.Add(this.inProgressTile);
 		}
 
-		this.currentSprites = this.inProgressSprites;
-
+		this.currentTiles = this.inProgressTiles;
 		this.status = Status.inProgress;
 		this.buildProgress = 0.0f;
 	}
@@ -118,7 +124,8 @@ public abstract class Building
 		}
 
 		if (this.status == Status.done)
-			this.currentSprites = this.completeSprites;
+			this.currentTiles = this.completeTiles;
+
 	}
 
 }

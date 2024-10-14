@@ -43,9 +43,12 @@ public class BuildingController : MonoBehaviour
 	public void HighlightTile()
 	{
 		Vector3Int cell = GetTileCoordinates();
-		model.lastCellColor = ((Tile)tilemap.GetTile(cell)).color;
+		Tile tile = (Tile)(tilemap.GetTile(cell));
+		if (tile==null) return;
+
 		view.HighlightTile(cell, model.lastHighlightedCell, model.lastCellColor);
 		model.lastHighlightedCell = cell;
+		model.lastCellColor = tile.color;
 	}
 
 

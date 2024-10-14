@@ -14,8 +14,10 @@ public class Castle : Building
 	{
 		this.name = "Castle";
 		this.dims = new Vector3Int(1, 1, 0);
-		this.inProgressSpritePath = "Sprites/InProgress";
-		this.completeSpritePath = "Sprites/SmallCastle";
+
+		this.inProgressTilePath = "Tiles/InProgress";
+		this.completeTilePath = "Tiles/SmallCastle";
+
 		this.moneyCost = 10000;
 		this.buildCost = 500f;
 

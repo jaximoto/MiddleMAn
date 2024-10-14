@@ -44,6 +44,7 @@ public class BuildingModel
 
 	}
 
+
 	public void AddBuilding(Building b)
 	{
 		//TODO: Need to interact with user stats like money
@@ -54,6 +55,7 @@ public class BuildingModel
 			occupiedTiles.Add(pos);
 		}
 	}
+
 
 	public void RemoveBuilding(Building b)
 	{

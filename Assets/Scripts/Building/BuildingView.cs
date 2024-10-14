@@ -33,7 +33,7 @@ public class BuildingView : MonoBehaviour
 		//This is so fuckign stupid
 		for (int i=0; i<b.tiles.Count; i++)
 		{
-			b.tiles[i].sprite = b.currentSprites[i];
+			tilemap.SetTile(b.residentCoordinates[i], b.currentTiles[i]);
 			tilemap.RefreshTile(b.residentCoordinates[i]);
 		}
 	}
@@ -42,7 +42,7 @@ public class BuildingView : MonoBehaviour
 	public void UpdateEquippedBuilding(Building b)
 	{
 		equippedBuildingName.text = b.name;
-		equippedBuildingRenderer.sprite = b.completeSprite;
+		equippedBuildingRenderer.sprite = b.completeTile.sprite;
 	}
 
 	
