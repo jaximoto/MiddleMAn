@@ -19,6 +19,11 @@ public class BuildingModel
 	public Bathhouse dummyBathhouse; //This sucks
 	public Castle dummyCastle;
 
+	public string equippedBuildingName;
+	
+	public Vector3Int lastHighlightedCell;
+	public Color lastCellColor;
+
 
 	public BuildingModel()
 	{
@@ -34,7 +39,11 @@ public class BuildingModel
 			{ buildingNames[0], this.dummyBathhouse},
 			{ buildingNames[1], this.dummyCastle}
 		};
+
+		this.lastHighlightedCell = new Vector3Int(-100000000, -10000000, 0);
+
 	}
+
 
 	public void AddBuilding(Building b)
 	{
@@ -47,6 +56,7 @@ public class BuildingModel
 		}
 	}
 
+
 	public void RemoveBuilding(Building b)
 	{
 		buildings.Remove(b.location);
@@ -57,23 +67,22 @@ public class BuildingModel
 		}
 	}
 
-	//TODO shit name
-	public bool CheckForBuilding(Vector3Int pos)
+
+	public bool CheckForBuilding(List<Vector3Int> coords)
 	{
-		return occupiedTiles.Contains(pos);
+		foreach (Vector3Int coord in coords)
+		{
+			if (occupiedTiles.Contains(coord))
+				return true;
+		}
+		return false;
 	}
+
 
 	public void EquipBuilding()
 	{
-		Debug.Log(buildingOptions.Current());
-		if (buildingOptions.Current().Equals("Bathhouse"))
-		{
-			dummyBuilding = dummyBathhouse;
-		} 
-		else if (buildingOptions.Current().Equals("Castle"))
-		{
-			dummyBuilding = dummyCastle;
-		} 
+		equippedBuildingName = buildingOptions.Current();
+		dummyBuilding = buildingsMap[equippedBuildingName];
 	}
 
 }

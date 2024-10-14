@@ -10,6 +10,7 @@ namespace Buildings
 {
 public abstract class Building
 {
+
 	public enum Status
 	{
 		inProgress,
@@ -29,12 +30,11 @@ public abstract class Building
 	public Vector3Int location;
 	public Vector3Int dims;
 
-	public string inProgressSpritePath;
-	public string completeSpritePath;
+	public string inProgressTilePath;
+	public string completeTilePath;
 
-	public Sprite inProgressSprite;
-	public Sprite completeSprite;
-	public Sprite currentSprite;
+	public Tile completeTile;
+	public Tile inProgressTile;
 
 	public List<Tile> tiles;
 
@@ -42,9 +42,9 @@ public abstract class Building
 	//This should proabbly be one list of tuples but showuld be fine
 	//This is fucking inexcusable
 	public List<Vector3Int> residentCoordinates;
-	public List<Sprite> completeSprites;
-	public List<Sprite> currentSprites;
-	public List<Sprite> inProgressSprites;
+	public List<Tile> completeTiles;
+	public List<Tile> currentTiles;
+	public List<Tile> inProgressTiles;
 
 	public void SetResidentCoordinates()
 	{
@@ -59,30 +59,56 @@ public abstract class Building
 
 	}
 
+
+	public List<Vector3Int> EnumerateCoordinates(Vector3Int pos)
+	{
+		List<Vector3Int> result = new List<Vector3Int>();
+		for (int i=0; i<dims.y; i++)
+		{
+			for (int j=0; j<dims.x; j++)
+			{
+				result.Add(new Vector3Int(pos.x + j, pos.y - i, 0));
+			}
+		}
+		return result;
+	}
+
+
 	public void GenericStaticInit()
 	{
-		this.inProgressSprites = new List<Sprite>();
-		this.completeSprites = new List<Sprite>();
+		this.inProgressTiles = new List<Tile>();
+		this.completeTiles = new List<Tile>();
+
+		this.completeTile = Resources.Load<Tile>(completeTilePath+"Entire");
+		this.inProgressTile = Resources.Load<Tile>(inProgressTilePath);
+
 	}
+
 
 	public void GenericInit()
 	{
-
 		this.tiles = new List<Tile>();
 
 		SetResidentCoordinates();
 
-		IList<Sprite> sList = Resources.LoadAll<Sprite>(completeSpritePath);
-		this.completeSprites.AddRange(sList);
+		if (residentCoordinates.Count == 1)
+		{
+			this.completeTiles.Add(this.completeTile);
+		}
+		else 
+		{
+			for (int i=0; i<residentCoordinates.Count; i++)
+			{
+				this.completeTiles.Add(Resources.Load<Tile>(completeTilePath+$"_{i}"));
+			}
+		}
 
 		for (int i=0; i<residentCoordinates.Count; i++)
 		{
-			Sprite s = Resources.Load<Sprite>(inProgressSpritePath);
-			this.inProgressSprites.Add(s);
+			this.inProgressTiles.Add(this.inProgressTile);
 		}
 
-		this.currentSprites = this.inProgressSprites;
-
+		this.currentTiles = this.inProgressTiles;
 		this.status = Status.inProgress;
 		this.buildProgress = 0.0f;
 	}
@@ -98,7 +124,7 @@ public abstract class Building
 		}
 
 		if (this.status == Status.done)
-			this.currentSprites = this.completeSprites;
+			this.currentTiles = this.completeTiles;
 
 	}
 

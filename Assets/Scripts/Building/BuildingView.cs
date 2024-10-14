@@ -14,6 +14,7 @@ public class BuildingView : MonoBehaviour
 
 	public SpriteRenderer equippedBuildingRenderer;
 
+	public TextMeshProUGUI notificationText; 
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class BuildingView : MonoBehaviour
 		//This is so fuckign stupid
 		for (int i=0; i<b.tiles.Count; i++)
 		{
-			b.tiles[i].sprite = b.currentSprites[i];
+			tilemap.SetTile(b.residentCoordinates[i], b.currentTiles[i]);
 			tilemap.RefreshTile(b.residentCoordinates[i]);
 		}
 	}
@@ -42,12 +43,38 @@ public class BuildingView : MonoBehaviour
 	public void UpdateEquippedBuilding(Building b)
 	{
 		equippedBuildingName.text = b.name;
-		equippedBuildingRenderer.sprite = b.completeSprite;
+		equippedBuildingRenderer.sprite = b.completeTile.sprite;
 	}
 
 	
-	public void HighlightTile(Vector3Int cell)
+	public void HighlightTile(Vector3Int cell, Vector3Int lastHighlightedCell, Color lastColor)
 	{
+		if (lastHighlightedCell == cell)
+			return;
+
+		tilemap.SetTileFlags(cell, TileFlags.None);
 		tilemap.SetColor(cell, Color.blue);
+
+		tilemap.SetTileFlags(lastHighlightedCell, TileFlags.None);
+		tilemap.SetColor(lastHighlightedCell, lastColor);
+	}
+
+	public void UpdateNotifyText(string text)
+	{
+		StartCoroutine(NotifyText(text));
+	}
+
+	private IEnumerator NotifyText(string text)
+	{
+		notificationText.text = text;
+
+		float dur = 0.0f;
+		while (dur < 1.0f)
+		{
+			yield return new WaitForSeconds(Time.deltaTime);
+			dur += Time.deltaTime;
+		}
+
+		notificationText.text = "";
 	}
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 using Utils;
 using Buildings;
@@ -17,7 +18,6 @@ public class BuildingController : MonoBehaviour
 	public BuildingView view;
 	public Tilemap tilemap;
 	public StatsManager statsManager;
-
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +43,12 @@ public class BuildingController : MonoBehaviour
 	public void HighlightTile()
 	{
 		Vector3Int cell = GetTileCoordinates();
-		view.HighlightTile(cell);
+		Tile tile = (Tile)(tilemap.GetTile(cell));
+		if (tile==null) return;
+
+		view.HighlightTile(cell, model.lastHighlightedCell, model.lastCellColor);
+		model.lastHighlightedCell = cell;
+		model.lastCellColor = tile.color;
 	}
 
 
@@ -67,24 +72,24 @@ public class BuildingController : MonoBehaviour
 
 	public void MakeBuilding(Vector3Int pos)
 	{
-		// This string checking thing fucking horrific
 		string currentBuildingName = model.buildingOptions.Current();
-		if (currentBuildingName.Equals("Bathhouse"))
+		Building b = BuildingFactory.MakeBuilding(currentBuildingName, pos, tilemap);
+		if (CheckMoney(b))
 		{
-			Building b = new Bathhouse(pos, tilemap);
 			model.AddBuilding(b);
 			view.UpdateBuilding(b);
 			MakeBuildingModifyStats(b);
 		}
-		if (currentBuildingName.Equals("Castle"))
+		else
 		{
-			Building b = new Castle(pos, tilemap);
-			model.AddBuilding(b);
-			view.UpdateBuilding(b);
-			MakeBuildingModifyStats(b);
+			view.UpdateNotifyText($"Need ${b.moneyCost} to build a {b.name}.");
 		}
-		//etc...
+	}
 
+
+	public bool CheckMoney(Building b)
+	{
+		return b.moneyCost <= statsManager.GetStatValue(StatType.money);
 	}
 
 
@@ -94,14 +99,30 @@ public class BuildingController : MonoBehaviour
 	}
 
 
+	public bool CheckForTiles(List<Vector3Int> coords)
+	{
+		foreach (Vector3Int coord in coords)
+		{
+			if (!tilemap.HasTile(coord))
+				return false;
+		}
+		return true;
+	}
+		
+
 	public void HandleClick()
 	{
+
 		Vector3Int clickedCell = GetTileCoordinates();
 
-		if (!tilemap.HasTile(clickedCell)) return;
+		// Coordinates this building will occupy
+		List<Vector3Int> coords = model.buildingsMap[model.equippedBuildingName].EnumerateCoordinates(clickedCell);
 
-		//Check to see if building on tile
-		if (model.CheckForBuilding(clickedCell))
+		// Do nothing if building spills outside of tilemap
+		if (!CheckForTiles(coords)) return;
+
+		//Check to see if building spills onto an occupied tile 
+		if (model.CheckForBuilding(coords))
 		{
 			//If yes, do nothing/bring up some UI thing
 		}

@@ -14,9 +14,13 @@ public class Bathhouse : Building
 	{
 		this.name = "Bathhouse";
 		this.dims = new Vector3Int(2, 2, 0);
-		this.inProgressSpritePath = "Sprites/InProgress";
-		this.completeSpritePath = "Sprites/SmallCastle";
-		this.moneyCost = 100;
+
+		this.inProgressTilePath = "Tiles/InProgress";
+		this.completeTilePath = "Tiles/Bathhouse";
+
+		this.moneyCost = 100000;
+		this.buildCost = 1000f;
+
 		GenericStaticInit();
 	}
 
@@ -31,7 +35,6 @@ public class Bathhouse : Building
 	public Bathhouse(Vector3Int _location, Tilemap tilemap)
 	{
 		this.location = _location;
-		this.buildCost = 1.0f;
 
 		StaticInit();
 		GenericInit();
