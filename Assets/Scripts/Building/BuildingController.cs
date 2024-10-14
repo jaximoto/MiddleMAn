@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 using Utils;
 using Buildings;
@@ -17,7 +18,6 @@ public class BuildingController : MonoBehaviour
 	public BuildingView view;
 	public Tilemap tilemap;
 	public StatsManager statsManager;
-
 
     // Start is called before the first frame update
     void Start()
@@ -72,24 +72,24 @@ public class BuildingController : MonoBehaviour
 
 	public void MakeBuilding(Vector3Int pos)
 	{
-		// This string checking thing fucking horrific
 		string currentBuildingName = model.buildingOptions.Current();
-		if (currentBuildingName.Equals("Bathhouse"))
+		Building b = BuildingFactory.MakeBuilding(currentBuildingName, pos, tilemap);
+		if (CheckMoney(b))
 		{
-			Building b = new Bathhouse(pos, tilemap);
 			model.AddBuilding(b);
 			view.UpdateBuilding(b);
 			MakeBuildingModifyStats(b);
 		}
-		if (currentBuildingName.Equals("Castle"))
+		else
 		{
-			Building b = new Castle(pos, tilemap);
-			model.AddBuilding(b);
-			view.UpdateBuilding(b);
-			MakeBuildingModifyStats(b);
+			view.UpdateNotifyText($"Need ${b.moneyCost} to build a {b.name}.");
 		}
-		//etc...
+	}
 
+
+	public bool CheckMoney(Building b)
+	{
+		return b.moneyCost <= statsManager.GetStatValue(StatType.money);
 	}
 
 

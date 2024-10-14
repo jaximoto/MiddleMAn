@@ -14,6 +14,7 @@ public class BuildingView : MonoBehaviour
 
 	public SpriteRenderer equippedBuildingRenderer;
 
+	public TextMeshProUGUI notificationText; 
 
     // Start is called before the first frame update
     void Start()
@@ -56,5 +57,24 @@ public class BuildingView : MonoBehaviour
 
 		tilemap.SetTileFlags(lastHighlightedCell, TileFlags.None);
 		tilemap.SetColor(lastHighlightedCell, lastColor);
+	}
+
+	public void UpdateNotifyText(string text)
+	{
+		StartCoroutine(NotifyText(text));
+	}
+
+	private IEnumerator NotifyText(string text)
+	{
+		notificationText.text = text;
+
+		float dur = 0.0f;
+		while (dur < 1.0f)
+		{
+			yield return new WaitForSeconds(Time.deltaTime);
+			dur += Time.deltaTime;
+		}
+
+		notificationText.text = "";
 	}
 }
