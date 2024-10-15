@@ -18,6 +18,7 @@ public class BuildingView : MonoBehaviour
 	public TextMeshProUGUI notificationText; 
 	public TextMeshProUGUI progressText; 
 	public TextMeshProUGUI workerText; 
+	public TextMeshProUGUI buildingKindText; 
 	public TMP_InputField workerAllocator; 
 
 	public GameObject buildingUI;
@@ -92,11 +93,13 @@ public class BuildingView : MonoBehaviour
 		{
 			progressText.text = "Done";
 			workerText.text = "";
+			buildingKindText.text = "";
 		}
 		else
 		{
-			progressText.text = $"{(b.buildProgress / b.buildCost) * 100} / 100 progress";
+			progressText.text = $"{(b.buildProgress / b.buildCost) * 100}% progress";
 			workerText.text = $"{b.assignedWorkers} workers";
+			buildingKindText.text = $"{b.name}";
 		}
 
 	}
