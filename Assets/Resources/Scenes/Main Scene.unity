@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 94013232553115403, guid: 06369f7ee9a3c455abeda5c2fb3a93e5, type: 3}
       propertyPath: m_text
-      value: ...
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 94013232553115403, guid: 06369f7ee9a3c455abeda5c2fb3a93e5, type: 3}
       propertyPath: m_fontSize
@@ -260,7 +260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5225712255166576508, guid: 06369f7ee9a3c455abeda5c2fb3a93e5, type: 3}
       propertyPath: m_text
-      value: jjj
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5225712255166576508, guid: 06369f7ee9a3c455abeda5c2fb3a93e5, type: 3}
       propertyPath: m_fontSize
