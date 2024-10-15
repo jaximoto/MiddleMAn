@@ -39,10 +39,12 @@ public class CalendarManager : MonoBehaviour
     private void Update()
     {
         // TODO REMOVE
+        /*
         if (Input.GetKey(KeyCode.A))
         {
            CreateRequest("Castle", RelationType.King);
         }
+        */
     }
     public void EndDay()
     {
