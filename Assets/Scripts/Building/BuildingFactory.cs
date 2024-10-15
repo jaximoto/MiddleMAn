@@ -10,6 +10,7 @@ public class BuildingFactory
 {
 	public static Building MakeBuilding(string name, Vector3Int pos, Tilemap tilemap)
 	{
+		//Switch statements? what are those fuck you renalod you fiowjuefio
 		if (name.Equals("Bathhouse"))
 		{
 			return new Bathhouse(pos, tilemap);
@@ -21,6 +22,14 @@ public class BuildingFactory
 		else if (name.Equals("Monument"))
 		{
 			return new Monument(pos, tilemap);
+		}
+		else if (name.Equals("Road"))
+		{
+			return new Road(pos, tilemap);
+		}
+		else if (name.Equals("House"))
+		{
+			return new House(pos, tilemap);
 		}
 		else
 		{

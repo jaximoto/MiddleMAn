@@ -164,6 +164,7 @@ public class BuildingController : MonoBehaviour
 	  	if (currentBuilding.IsDone()) 
 		{
 			view.UpdateNotifyText("This building is done");
+			return;
 		}
 
 		int newWorkers = -1;
