@@ -1707,6 +1707,7 @@ MonoBehaviour:
   buildingKindText: {fileID: 1313395961}
   workerAllocator: {fileID: 1560965219}
   buildingUI: {fileID: 3908619}
+  defaultTile: {fileID: 11400000, guid: 6b4e19fe407ce46d6a0249b9351dbe7f, type: 2}
 --- !u!4 &1222013294
 Transform:
   m_ObjectHideFlags: 0
