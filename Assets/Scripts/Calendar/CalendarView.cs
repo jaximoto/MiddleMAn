@@ -9,11 +9,13 @@ public class CalendarView : MonoBehaviour
 {
 	public TextMeshProUGUI dayCounter;
 	public TextMeshProUGUI notificationText;
-    
+	public Image monthImageUI;
+
 	public List<Sprite> dayNumbers = new();
 	public List<Sprite> taskBackgrounds = new();
 	public CalendarManager calendarManager;
 	public RequestManager requestManager;
+
 
 	public GameObject calendarUI;
 	public GameObject dayContainer;
@@ -22,10 +24,12 @@ public class CalendarView : MonoBehaviour
 
 	public GameObject taskBoxContainer;
 	float taskboxStartingX = -153;
-	float taskboxStartingY = 73;	
+	float taskboxStartingY = 73;
+
+	GameObject parentObject;
 	public void SetupCalendarUI(int daysInMonth)
 	{
-		GameObject parentObject = new GameObject("DaysParent");
+		parentObject = new GameObject("DaysParent");
 		parentObject.transform.SetParent(calendarUI.transform);
 		float currentX = startingX;
 		float currentY = startingY;
@@ -53,6 +57,17 @@ public class CalendarView : MonoBehaviour
 		}
 	}
 
+	public void DestroyCalendarUI()
+	{
+		Destroy(parentObject);
+	}
+
+	public void ResetMonthCalendar(int daysInMonth, Sprite newImage)
+	{
+		DestroyCalendarUI();
+		SetupCalendarUI(daysInMonth);
+		monthImageUI.sprite = newImage;
+	}
 	public void BackButtonClick()
 	{
 		calendarUI.SetActive(false);
