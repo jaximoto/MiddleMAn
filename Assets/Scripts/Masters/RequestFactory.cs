@@ -104,7 +104,8 @@ public class GenericRequest
 
         //int maxTimeCalc = Mathf.CeilToInt(adjustedBuildTime / (this.totalWorkers * .5f * this.productivity));
         Debug.Log($"baseTimeCalc {baseTimeCalc} adjustedBuildTime {adjustedBuildTime}");
-        return Random.Range(baseTimeCalc, adjustedBuildTime);
+        //return Random.Range(baseTimeCalc, adjustedBuildTime);
+        return currentDay + 10 + Random.Range(-5, 5);
     }   
     public int GetReward()
     {
@@ -136,6 +137,16 @@ public class GodRequest : GenericRequest
     public GodRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
        int currentDay)
         : base(buildingInfo, workerStats, importance, currentDay, RelationType.God)
+    {
+        // Eat 
+    }
+}
+
+public class WorkerRequest : GenericRequest
+{
+    public WorkerRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
+       int currentDay)
+        : base(buildingInfo, workerStats, importance, currentDay, RelationType.Workers)
     {
         // Eat 
     }
@@ -206,7 +217,11 @@ public class RequestFactory
         {
             return new GodRequest(buildingInfo, workerStats, importance, currentDay);
         }
-                
+
+        else if (relation == RelationType.Workers)
+        {
+            return new WorkerRequest(buildingInfo, workerStats, importance, currentDay);
+        }
         else
         {
             Debug.LogError($"Error, Request Factory doesn't recognize: {relation}");

@@ -18,7 +18,7 @@ public class RequestManager : MonoBehaviour
 
     
 
-    Dictionary<string, Building> buildingDict;
+   
 
     PlayerWorkerStats workerStats;
 
@@ -26,11 +26,7 @@ public class RequestManager : MonoBehaviour
 
     private void Awake()
     {
-        buildingDict = new()
-        {
-            { "Castle", new Castle() },
-            { "Bathhouse", new Bathhouse() }
-        };
+       
         RequestFactory = new RequestFactory();
        
     }
@@ -68,7 +64,7 @@ public class RequestManager : MonoBehaviour
         }
 
         // Make sure there is not more than 3 requests in day
-        GenericRequest request = RequestFactory.CreateRequestWithRelation(buildingDict[buildingType], workerStats, currentDay, relationType);
+        GenericRequest request = RequestFactory.CreateRequestWithRelation(buildingController.model.buildingsMap[buildingType], workerStats, currentDay, relationType);
 
         if (request.deadline > maxDayInMonth)
         {

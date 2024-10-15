@@ -53,6 +53,15 @@ public class CalendarView : MonoBehaviour
 		}
 	}
 
+	public void BackButtonClick()
+	{
+		calendarUI.SetActive(false);
+	}
+
+	public void CalenderPickIconClick()
+	{
+		calendarUI.SetActive(true);
+	}
 	public void AddRequestToCalendar(RequestInfo requestInfo)
 	{
 		

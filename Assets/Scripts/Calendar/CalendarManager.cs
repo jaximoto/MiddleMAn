@@ -1,19 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CalendarManager : MonoBehaviour
 {
+    public BuildingController buildingController;
     public StatsManager statsManager;
     Calendar calendar;
     public RequestManager requestManager;
     public CalendarView calendarHudUI;
     // building mapped to list of due dates
     public Dictionary<string, List<int>> BuildingToDay = new();
+    public List<RelationType> RelationTypes;
     private void Awake()
     {
         calendar = new Calendar();
-
+        RelationTypes = new()
+        {
+            RelationType.King,
+            RelationType.God,
+            RelationType.Workers
+        };
 
         
     }
@@ -30,6 +38,7 @@ public class CalendarManager : MonoBehaviour
 
     private void Update()
     {
+        // TODO REMOVE
         if (Input.GetKey(KeyCode.A))
         {
            CreateRequest("Castle", RelationType.King);
@@ -68,7 +77,8 @@ public class CalendarManager : MonoBehaviour
         requestManager.currentDay = calendar.day;
         requestManager.maxDayInMonth = calendar.daysInCurrentMonth;
 
-        
+        // Add new random request
+        CreateRequest(buildingController.model.buildingNames[Random.Range(0, buildingController.model.buildingNames.Count())], RelationTypes[Random.Range(0, RelationTypes.Count)]);
 
         // Update UI
         calendarHudUI.UpdateDay(calendar.day);
