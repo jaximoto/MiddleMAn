@@ -23,6 +23,8 @@ public class BuildingView : MonoBehaviour
 
 	public GameObject buildingUI;
 
+	public Tile defaultTile;
+
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +47,17 @@ public class BuildingView : MonoBehaviour
 			tilemap.RefreshTile(b.residentCoordinates[i]);
 		}
 	}
+
+
+	public void RemoveBuilding(Building b)
+	{
+		for (int i=0; i<b.tiles.Count; i++)
+		{
+			tilemap.SetTile(b.residentCoordinates[i], defaultTile);
+			tilemap.RefreshTile(b.residentCoordinates[i]);
+		}
+	}
+
 
 
 	public void UpdateEquippedBuilding(Building b)
