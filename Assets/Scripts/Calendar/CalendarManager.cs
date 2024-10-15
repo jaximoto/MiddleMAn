@@ -7,6 +7,7 @@ public class CalendarManager : MonoBehaviour
     Calendar calendar;
     public RequestManager requestManager;
     public CalendarView calendarHudUI;
+    
     private void Awake()
     {
         calendar = new Calendar();
@@ -18,7 +19,7 @@ public class CalendarManager : MonoBehaviour
     private void Start()
     {
         requestManager.currentDay = calendar.day;
-
+        calendarHudUI.SetupCalendarUI(calendar.daysInCurrentMonth);
         Debug.Log($"calendar days in month: {calendar.daysInCurrentMonth}");
         requestManager.maxDayInMonth = calendar.daysInCurrentMonth;
         //CreateRequest("Castle", RelationType.King);

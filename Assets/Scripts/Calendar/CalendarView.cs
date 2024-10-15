@@ -9,9 +9,47 @@ public class CalendarView : MonoBehaviour
 {
 	public TextMeshProUGUI dayCounter;
 	public TextMeshProUGUI notificationText;
+    
+	public List<Sprite> dayNumbers = new();
+	public CalendarManager calendarManager;
 
+	public GameObject calendarUI;
+	public GameObject dayContainer;
+	float startingX = 461;
+	float startingY = 540;
 
-	public void UpdateDay(int newDay)
+	
+	public void SetupCalendarUI(int daysInMonth)
+	{
+		GameObject parentObject = new GameObject("DaysParent");
+		parentObject.transform.SetParent(calendarUI.transform);
+		float currentX = startingX;
+		float currentY = startingY;
+		for (int i = 1; i < daysInMonth; i++)
+		{
+			GameObject tmp = Instantiate(dayContainer, new Vector3(currentX, currentY, 1), Quaternion.identity);
+			
+			tmp.transform.SetParent(parentObject.transform);
+
+			tmp.transform.localScale = new Vector3(2.5f, 2.5f, 1);
+            Image[] spriteArr = tmp.GetComponentsInChildren<Image>();
+
+			// Setup day variables
+			spriteArr[0].sprite = dayNumbers[i / 10];
+			spriteArr[1].sprite = dayNumbers[i % 10];
+
+			currentX += 128;
+
+			if (i % 7 == 0)
+			{
+				currentY -= 137;
+				currentX = startingX;
+			}
+		}
+	}
+
+	
+    public void UpdateDay(int newDay)
 	{
 		dayCounter.text = $"Day {newDay}";
 		StartCoroutine(DisplayNextDayText(newDay-1));
