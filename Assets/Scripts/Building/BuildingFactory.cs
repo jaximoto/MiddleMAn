@@ -27,6 +27,10 @@ public class BuildingFactory
 		{
 			return new Road(pos, tilemap);
 		}
+		else if (name.Equals("House"))
+		{
+			return new House(pos, tilemap);
+		}
 		else
 		{
 			return new Bathhouse(pos, tilemap);
