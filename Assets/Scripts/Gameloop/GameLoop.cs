@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+using static StatsManager;
 
 public class GameLoop : MonoBehaviour
 {
+
+	public StatsManager statsManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +20,12 @@ public class GameLoop : MonoBehaviour
     void Update()
     {
 
+
+    }
+
+
+	void Loop()
+	{
 		// Spawn tasks, display them to player
 
 
@@ -21,8 +33,11 @@ public class GameLoop : MonoBehaviour
 		
 
 		// End day when player clicks new button
+	}
 
 
+	public void EndDay()
+	{
 		// Check which tasks have been fulfilled, update affinities
 
 
@@ -30,7 +45,22 @@ public class GameLoop : MonoBehaviour
 		
 
 		// Update player stats based on new affinities
+		statsManager.UpdateStats();
 
-        
-    }
+
+		// If run out of money or affinity for anyone zero lose
+		if (CheckLose())
+		{
+			SceneManager.LoadScene("GameOver");
+		}
+
+	}
+
+
+
+	// Wrap your lips around me
+	private bool CheckLose()
+	{
+		return statsManager.CheckLose();
+	}
 }

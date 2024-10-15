@@ -20,6 +20,9 @@ public class StatsUI : MonoBehaviour
 
         StatsManager.OnStatChanged += UpdateStatUI;
         StatsManager.OnRelationChanged += UpdateRelationUI;
+
+		int defaultMoney = 10000;
+		UpdateStatUI(StatType.money, defaultMoney);
     }
 
    public void UpdateStatUI(StatType type, int amount)
