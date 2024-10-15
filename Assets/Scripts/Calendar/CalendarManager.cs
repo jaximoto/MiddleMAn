@@ -30,7 +30,7 @@ public class CalendarManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-            CreateRequest("Castle", RelationType.King);
+           CreateRequest("Castle", RelationType.King);
         }
     }
     public void EndDay()
@@ -49,7 +49,11 @@ public class CalendarManager : MonoBehaviour
     {
         // Get the key and update the Calendar UI with the key
         RequestInfo reqKey = requestManager.AddRequest(buildingName, relationType);
-
+        if ( reqKey != null )
+        {
+            calendarHudUI.AddRequestToCalendar(reqKey);
+        }
+        
     }
     
 }

@@ -20,8 +20,9 @@ public class CalendarView : MonoBehaviour
 	float startingX = 461;
 	float startingY = 540;
 
-	float taskboxStartingX = -154;
-	float taskboxStartingY = 74;	
+	public GameObject taskBoxContainer;
+	float taskboxStartingX = -153;
+	float taskboxStartingY = 73;	
 	public void SetupCalendarUI(int daysInMonth)
 	{
 		GameObject parentObject = new GameObject("DaysParent");
@@ -54,7 +55,27 @@ public class CalendarView : MonoBehaviour
 
 	public void AddRequestToCalendar(RequestInfo requestInfo)
 	{
+		
 		GenericRequest tmp = requestManager.requestDictionary[requestInfo.dayScheduled][requestInfo.buildingName];
+
+		// Get request and instantiate a ui element at the correct place and set its parent and scale
+		if (tmp != null)
+		{
+			float x = taskboxStartingX + (52.6f * (requestInfo.dayScheduled % 10f));
+			//float y = taskboxStartingY - 55f * requestInfo.dayScheduled / 10f;
+			
+            GameObject container = Instantiate(taskBoxContainer, new Vector3(x, taskboxStartingY, 1f), Quaternion.identity);
+			// set image
+			container.GetComponent<Image>().sprite = taskBackgrounds[(int)tmp.relationType];
+
+			// Set Text
+			container.GetComponentInChildren<TMP_Text>().text = tmp.buildingName;
+
+			// parent bs
+			container.transform.SetParent(calendarUI.transform);
+			container.transform.localScale = Vector3.one;
+			container.transform.localPosition = new Vector3(x, taskboxStartingY, 1f);
+		}
 
 	}
 
