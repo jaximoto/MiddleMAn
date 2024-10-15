@@ -8,7 +8,17 @@ public static class BuildingConstraints
     public static int MaxCost = 100000000;
 }
 
+public class PlayerWorkerStats
+{
+    public int workers;
+    public int productivity;
 
+    public PlayerWorkerStats(int workers, int productivity)
+    {
+        this.workers = workers;
+        this.productivity = productivity;
+    }
+}
 
 public class RequestWeights
 {
