@@ -47,12 +47,10 @@ public class BuildingModel
 
 	public void AddBuilding(Building b)
 	{
-		//TODO: Need to interact with user stats like money
-		buildings.Add(b.location, b);
-
 		foreach(Vector3Int pos in b.residentCoordinates)
 		{
 			occupiedTiles.Add(pos);
+			buildings.Add(pos, b);
 		}
 	}
 
