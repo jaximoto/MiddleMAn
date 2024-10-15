@@ -61,10 +61,34 @@ public class CalendarView : MonoBehaviour
 		// Get request and instantiate a ui element at the correct place and set its parent and scale
 		if (tmp != null)
 		{
-			float x = taskboxStartingX + (52.6f * (requestInfo.dayScheduled % 10f));
-			//float y = taskboxStartingY - 55f * requestInfo.dayScheduled / 10f;
+			float x;
+			float y;
+
+            if (requestInfo.dayScheduled % 7 != 0)
+			{
+                x = taskboxStartingX + (51f * ((requestInfo.dayScheduled % 7) - 1));
+				
+            }
+			else
+			{
+				x = taskboxStartingX + 51f * 6;
+				
+			}
+            //x = taskboxStartingX + (52f * ((requestInfo.dayScheduled % 7) - 1));
+            //float xPositionIndex = taskboxStartingX + 52f * (requestInfo.dayScheduled - 1) % 7 + 1;  // X cycles through 1-7
+            //float yPositionIndex = taskboxStartingY - 55f * (requestInfo.dayScheduled - 1) / 7;  // Y increases after every 7 days
 			
-            GameObject container = Instantiate(taskBoxContainer, new Vector3(x, taskboxStartingY, 1f), Quaternion.identity);
+			if (requestInfo.dayScheduled % 7 == 0)
+			{
+				y = taskboxStartingY;
+            }
+			else
+			{
+                y = taskboxStartingY - 55f * (requestInfo.dayScheduled / 7);
+            }
+             //y = taskboxStartingY - 55f *  (requestInfo.dayScheduled / 7);
+			
+            GameObject container = Instantiate(taskBoxContainer, new Vector3(x, y, 1f), Quaternion.identity);
 			// set image
 			container.GetComponent<Image>().sprite = taskBackgrounds[(int)tmp.relationType];
 
@@ -74,7 +98,7 @@ public class CalendarView : MonoBehaviour
 			// parent bs
 			container.transform.SetParent(calendarUI.transform);
 			container.transform.localScale = Vector3.one;
-			container.transform.localPosition = new Vector3(x, taskboxStartingY, 1f);
+			container.transform.localPosition = new Vector3(x, y, 1f);
 		}
 
 	}
