@@ -160,6 +160,12 @@ public class BuildingController : MonoBehaviour
 	public void AllocateWorkers()
 	{
 		if (currentBuilding==null) return;
+
+	  	if (currentBuilding.IsDone()) 
+		{
+			view.UpdateNotifyText("This building is done");
+		}
+
 		int newWorkers = -1;
 		bool validInput = System.Int32.TryParse(workerAllocator.text, out newWorkers);
 
