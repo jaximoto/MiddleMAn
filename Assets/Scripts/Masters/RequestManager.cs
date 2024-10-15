@@ -11,6 +11,7 @@ public class RequestManager : MonoBehaviour
     public int currentDay;
     public int maxDayInMonth;
     public StatsManager statsManager;
+    public BuildingController buildingController;
 
     // Day : dict<requestID, request>
     Dictionary<int, Dictionary<int, GenericRequest>> requestDictionary = new();
@@ -58,7 +59,7 @@ public class RequestManager : MonoBehaviour
 
     public RequestInfo AddRequest(string buildingType, RelationType relationType)
     {
-        if (!buildingDict.ContainsKey(buildingType))
+        if (!buildingController.model.buildingsMap.ContainsKey(buildingType))
         {
             Debug.LogError($"Error, Building dict does not contain key {buildingType}");
             return null;
