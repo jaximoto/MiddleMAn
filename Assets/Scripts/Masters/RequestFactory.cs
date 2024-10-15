@@ -19,6 +19,7 @@ public enum ImportanceFactor
 }
 public class GenericRequest
 {
+    public int requestID;
     public float buildTime;
     public float maxBuildTime;
 
@@ -38,6 +39,7 @@ public class GenericRequest
     public GenericRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
         int currentDay, RelationType relationType)
     {
+        this.requestID = BuildingConstraints.requestId++;
         this.totalWorkers = workerStats.workers;
         this.productivity = workerStats.productivity;
         this.currentDay = currentDay;
