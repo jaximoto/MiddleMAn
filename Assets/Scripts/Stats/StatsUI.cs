@@ -30,7 +30,7 @@ public class StatsUI : MonoBehaviour
                 moneyText.text = $"Money: {amount}";
                 break;
 
-            case StatType.workers:
+            case StatType.availableWorkers:
                 workerText.text = $"Worker: {amount}";
                 break;
 

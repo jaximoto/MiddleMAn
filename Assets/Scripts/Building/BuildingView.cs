@@ -9,12 +9,19 @@ using Buildings;
 public class BuildingView : MonoBehaviour
 {
 	public Tilemap tilemap;
+
 	public TextMeshProUGUI equippedBuildingName; 
 	public GameObject equippedBuildingSprite;
 
 	public SpriteRenderer equippedBuildingRenderer;
 
 	public TextMeshProUGUI notificationText; 
+	public TextMeshProUGUI progressText; 
+	public TextMeshProUGUI workerText; 
+	public TMP_InputField workerAllocator; 
+
+	public GameObject buildingUI;
+
 
     // Start is called before the first frame update
     void Start()
@@ -77,4 +84,26 @@ public class BuildingView : MonoBehaviour
 
 		notificationText.text = "";
 	}
+
+
+	public void RefreshBuildingUI(Building b)
+	{
+		if (b.IsDone())
+		{
+			progressText.text = "Done";
+			workerText.text = "";
+		}
+		else
+		{
+			progressText.text = $"{(b.buildProgress / b.buildCost) * 100} / 100 progress";
+			workerText.text = $"{b.assignedWorkers} workers";
+		}
+
+	}
+
+	public void ClearWorkerAllocator()
+	{
+		workerAllocator.text = "";
+	}
+
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 using static StatsManager;
 
@@ -23,8 +24,16 @@ public abstract class Building
 
 	public int moneyCost;
 	public float buildCost;
-	public float buildProgress;
+	public int assignedWorkers;
 
+	public bool hasSlider;
+	public bool hasText;
+	public bool displayedUI;
+
+	public GameObject workerAllocation;
+	public TextMeshProUGUI progressText;
+
+	public float buildProgress;
 	public abstract void DayAction();
 
 	public Vector3Int location;
@@ -87,6 +96,9 @@ public abstract class Building
 
 	public void GenericInit()
 	{
+		this.hasSlider = false;
+		this.hasText = false;
+
 		this.tiles = new List<Tile>();
 
 		SetResidentCoordinates();
@@ -123,9 +135,17 @@ public abstract class Building
 			this.status = Status.done;
 		}
 
-		if (this.status == Status.done)
+		if (IsDone())
+		{
 			this.currentTiles = this.completeTiles;
+		}
 
+	}
+
+
+	public bool IsDone()
+	{
+		return status == Status.done;
 	}
 
 }
