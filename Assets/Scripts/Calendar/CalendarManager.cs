@@ -30,7 +30,7 @@ public class CalendarManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-           CreateRequest("Castle", RelationType.King);
+           CreateRequest("Castle", RelationType.God);
         }
     }
     public void EndDay()
