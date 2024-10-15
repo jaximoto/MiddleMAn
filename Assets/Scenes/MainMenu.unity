@@ -730,7 +730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1079648660}
   - component: {fileID: 1079648661}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MainMenuBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -882,7 +882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1532947104}
   - component: {fileID: 1532947105}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: boss 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
