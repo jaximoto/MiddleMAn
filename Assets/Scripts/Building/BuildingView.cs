@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
 
@@ -11,9 +12,8 @@ public class BuildingView : MonoBehaviour
 	public Tilemap tilemap;
 
 	public TextMeshProUGUI equippedBuildingName; 
-	public GameObject equippedBuildingSprite;
 
-	public SpriteRenderer equippedBuildingRenderer;
+	public Image equippedBuildingRenderer;
 
 	public TextMeshProUGUI notificationText; 
 	public TextMeshProUGUI progressText; 
@@ -27,7 +27,6 @@ public class BuildingView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		equippedBuildingRenderer = equippedBuildingSprite.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame

@@ -10,7 +10,7 @@ using Buildings;
 using static BuildingView;
 using static BuildingModel;
 using static StatsManager;
-
+using System.Linq;
 
 public class BuildingController : MonoBehaviour
 {
@@ -18,7 +18,8 @@ public class BuildingController : MonoBehaviour
 	public BuildingView view;
 	public Tilemap tilemap;
 	public StatsManager statsManager;
-
+	public CalendarManager calendarManager;
+	public RequestManager requestManager;
 	public Building currentBuilding;
 
 	public TMP_InputField workerAllocator;
@@ -216,6 +217,7 @@ public class BuildingController : MonoBehaviour
 	public void AdvanceBuildingStates()
 	{
 		//TODO
+		List<Building> markedForRemoval = new();
 		foreach (Building b in model.buildings.Values)
 		{
 			float progress = ComputeProgress(b);
@@ -224,10 +226,37 @@ public class BuildingController : MonoBehaviour
 
 			if (b.IsDone())
 			{
+				// call calendar to remove request and get reward
+				if (calendarManager.BuildingToDay.ContainsKey(b.name))
+				{
+					// not perfect
+					if (calendarManager.BuildingToDay[b.name].Count != 0)
+					{
+                        int deadline = calendarManager.BuildingToDay[b.name].Min();
+
+                        if (requestManager.requestDictionary.ContainsKey(deadline))
+                        {
+                            if (requestManager.requestDictionary[deadline].ContainsKey(b.name))
+                            {
+                                statsManager.ChangeAptitude(requestManager.requestDictionary[deadline][b.name].relationType, requestManager.requestDictionary[deadline][b.name].GetReward());
+                                calendarManager.ClearRequest(b.name, deadline);
+                            }
+                        }
+                    }
+					
+				}
+				markedForRemoval.Add(b);
+				
+				
 				statsManager.ChangeStat(StatType.availableWorkers, b.assignedWorkers);
 				b.assignedWorkers = 0;
 			}
+			
 		}
-	}
+        for (int i = 0; i < markedForRemoval.Count; i++)
+        {
+            model.RemoveBuilding(markedForRemoval[i]);
+        }
+    }
 
 }
