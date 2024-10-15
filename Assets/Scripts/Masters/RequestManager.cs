@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RequestManager : MonoBehaviour
 {
-    public float buildTimeWeight, buildCostWeight, importanceWeight;
+    
     public int currentDay;
     public StatsManager statsManager;
 
