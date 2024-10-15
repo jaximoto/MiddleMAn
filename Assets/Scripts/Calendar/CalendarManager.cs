@@ -14,6 +14,7 @@ public class CalendarManager : MonoBehaviour
     // building mapped to list of due dates
     public Dictionary<string, List<int>> BuildingToDay = new();
     public List<RelationType> RelationTypes;
+    AudioSource audioSource;
     private void Awake()
     {
         calendar = new Calendar();
@@ -23,6 +24,7 @@ public class CalendarManager : MonoBehaviour
             RelationType.God,
             RelationType.Workers
         };
+        audioSource = GetComponent<AudioSource>();
 
         
     }
@@ -49,6 +51,7 @@ public class CalendarManager : MonoBehaviour
     }
     public void EndDay()
     {
+        audioSource.Play();
         List<RequestInfo> markedForRemoval = new();
         // Check if any deadlines were due today
         // Check the dictionary for the day by using get keys

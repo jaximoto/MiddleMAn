@@ -40,12 +40,45 @@ public class BuildingController : MonoBehaviour
 		{
 			HandleClick();
 		}
+		else if (Input.GetMouseButtonDown(1))
+		{
+			HandleRightClick();
+		}
 
 		HighlightTile();
 
 		if (currentBuilding!=null)
 			view.RefreshBuildingUI(currentBuilding);
 	}
+
+
+	public void HandleRightClick()
+	{
+		Vector3Int cell = GetTileCoordinates();
+
+		Debug.Log(!model.doneBuildings.ContainsKey(cell));
+
+		if ((!model.buildings.ContainsKey(cell)) && (!model.doneBuildings.ContainsKey(cell))) return;
+
+		if (model.buildings.ContainsKey(cell))
+		{
+			Building b = model.buildings[cell];
+			model.RemoveBuilding(b, true);
+			view.RemoveBuilding(b);
+			currentBuilding = null;
+			statsManager.ChangeStat(StatType.availableWorkers, b.assignedWorkers);
+		}
+		else
+		{
+			Building b = model.doneBuildings[cell];
+			model.RemoveBuilding(b, true);
+			view.RemoveBuilding(b);
+			currentBuilding = null;
+			statsManager.ChangeStat(StatType.availableWorkers, b.assignedWorkers);
+		}
+	}
+
+
 
 
 	public void HighlightTile()
@@ -250,12 +283,17 @@ public class BuildingController : MonoBehaviour
 				
 				statsManager.ChangeStat(StatType.availableWorkers, b.assignedWorkers);
 				b.assignedWorkers = 0;
+
+				foreach (Vector3Int coord in b.residentCoordinates)
+				{
+					model.doneBuildings.Add(coord, b);
+				}
 			}
 			
 		}
         for (int i = 0; i < markedForRemoval.Count; i++)
         {
-            model.RemoveBuilding(markedForRemoval[i]);
+            model.RemoveBuilding(markedForRemoval[i], false);
         }
     }
 

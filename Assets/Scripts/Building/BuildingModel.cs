@@ -12,6 +12,7 @@ public class BuildingModel
 	public CircularList<string> buildingOptions;
 
 	public Dictionary<Vector3Int, Building> buildings;
+	public Dictionary<Vector3Int, Building> doneBuildings;
 	public Dictionary<string, Building> buildingsMap;
 	public HashSet<Vector3Int> occupiedTiles;
 
@@ -32,6 +33,7 @@ public class BuildingModel
 	public BuildingModel()
 	{
 		this.buildings = new Dictionary<Vector3Int, Building>();
+		this.doneBuildings = new Dictionary<Vector3Int, Building>();
 		this.buildingOptions = new CircularList<string>(buildingNames);
 		this.occupiedTiles = new HashSet<Vector3Int>();
 
@@ -65,12 +67,13 @@ public class BuildingModel
 	}
 
 
-	public void RemoveBuilding(Building b)
+	public void RemoveBuilding(Building b, bool removeDone)
 	{
-		buildings.Remove(b.location);
-
 		foreach(Vector3Int pos in b.residentCoordinates)
 		{
+			buildings.Remove(pos);
+			if (removeDone)
+				doneBuildings.Remove(pos);
 			occupiedTiles.Remove(pos);
 		}
 	}
