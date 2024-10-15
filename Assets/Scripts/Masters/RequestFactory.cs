@@ -6,22 +6,24 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public enum ImportanceFactor
 {
-    Negligible = 1,    // Level 1
-    Unimportant = 2,       // Level 2
-    Low = 3,           // Level 3
-    Slight = 4,        // Level 4
-    Moderate = 5,      // Level 5
-    Substantial = 6,    // Level 6
-    High = 7,          // Level 7
-    Severe = 8,      // Level 8
-    Critical = 9,      // Level 9
-    Maximum = 10       // Level 10
+    Maximum = 1,       // Level 1
+    Critical = 2,      // Level 2
+    Severe = 3,        // Level 3
+    High = 4,          // Level 4
+    Substantial = 5,   // Level 5
+    Moderate = 6,      // Level 6
+    Slight = 7,        // Level 7
+    Low = 8,           // Level 8
+    Unimportant = 9,   // Level 9
+    Negligible = 10    // Level 10
 }
 public class GenericRequest
 {
     public float buildTime;
     public float maxBuildTime;
 
+    int totalWorkers;
+    int productivity;
     int cost;
     public int maxCost;
 
@@ -33,21 +35,20 @@ public class GenericRequest
 
     public int deadline;
 
-    public GenericRequest(Building buildingInfo, RequestWeights RequestWeights,
-        SchedulingParams schedulingParams, RelationType relationType)
+    public GenericRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
+        int currentDay, RelationType relationType)
     {
+        this.totalWorkers = workerStats.workers;
+        this.productivity = workerStats.productivity;
+        this.currentDay = currentDay;
         this.buildTime = buildingInfo.buildCost;
-        this.maxBuildTime = BuildingConstraints.MaxBuildTime;
-        this.cost = buildingInfo.moneyCost;
-        this.maxCost = BuildingConstraints.MaxCost;
-        this.currentDay = schedulingParams.currentDay;
-        this.maxDeadline = schedulingParams.maxDeadline;
-        this.importance = GetImportance(RequestWeights);
+        this.importance = importance;
         this.relationType = relationType;
-        this.deadline = GetDeadline(RequestWeights, this.importance);
+        this.deadline = GetDeadline();
     }
 
     
+    /*
     public ImportanceFactor GetImportance(RequestWeights RequestWeights)
     {
         Debug.Log($"timeWeight = {RequestWeights.time}, costweight = {RequestWeights.money}");
@@ -73,30 +74,22 @@ public class GenericRequest
         
 
     }
-
-    public int GetDeadline(RequestWeights requestWeights, ImportanceFactor importance)
+    */
+    public int GetDeadline()
     {
-        float timeValue = requestWeights.time * (buildTime / maxBuildTime);
-        float costValue = requestWeights.money * (cost / maxCost);
-        float importanceValue = requestWeights.importance * ((int)importance / 10);
-        int deadlineValue = maxDeadline - currentDay;
+        int baseTimeCalc = Mathf.CeilToInt(this.buildTime / (this.totalWorkers * .5f * this.productivity));
+        //Debug.Log($"BuildTime: {this.buildTime}");
 
-        int result = Mathf.CeilToInt(currentDay + (timeValue + costValue + importanceValue) * deadlineValue);
-        
-        if (result < currentDay)
-        {
-            return currentDay;
-        }
 
-        else if (result > maxDeadline)
-        {
-            return maxDeadline;
-        }
-        else
-        {
-            return result;
-        }
-    }
+
+        int adjustedBuildTime = baseTimeCalc + 1 * (int)this.importance;
+
+        //Debug.Log($"adjusted BuildTime {adjustedBuildTime}");
+
+        //int maxTimeCalc = Mathf.CeilToInt(adjustedBuildTime / (this.totalWorkers * .5f * this.productivity));
+        Debug.Log($"baseTimeCalc {baseTimeCalc} adjustedBuildTime {adjustedBuildTime}");
+        return Random.Range(baseTimeCalc, adjustedBuildTime);
+    }   
     public int GetReward()
     {
         int importanceMultiplier = (int)importance;
@@ -112,9 +105,9 @@ public class GenericRequest
 
 public class KingRequest : GenericRequest
 {
-    public KingRequest(Building buildingInfo, RequestWeights RequestWeights,
-        SchedulingParams schedulingParams)
-        : base(buildingInfo, RequestWeights, schedulingParams, RelationType.King)
+    public KingRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
+        int currentDay)
+        : base(buildingInfo, workerStats, importance, currentDay, RelationType.King)
     {
         // Fuck you
     }
@@ -124,9 +117,9 @@ public class KingRequest : GenericRequest
 
 public class GodRequest : GenericRequest
 {
-    public GodRequest(Building buildingInfo, RequestWeights RequestWeights,
-        SchedulingParams schedulingParams)
-        : base(buildingInfo, RequestWeights, schedulingParams, RelationType.God)
+    public GodRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
+       int currentDay)
+        : base(buildingInfo, workerStats, importance, currentDay, RelationType.God)
     {
         // Eat 
     }
@@ -183,19 +176,19 @@ public class GodRequestFactory : RequestFactory
 
 public class RequestFactory
 {
-    public GenericRequest CreateRequestWithRelation(Building buildingInfo, RequestWeights RequestWeights,
-        SchedulingParams schedulingParams, RelationType relation)
+    public GenericRequest CreateRequestWithRelation(Building buildingInfo, PlayerWorkerStats workerStats,
+        int currentDay, RelationType relation)
     {
-       
+        ImportanceFactor importance = (ImportanceFactor)Random.Range(1, 11);
         
         if (relation == RelationType.King)
         {
-            return new KingRequest(buildingInfo, RequestWeights, schedulingParams);
+            return new KingRequest(buildingInfo, workerStats, importance, currentDay);
         }
         
         else if ( relation == RelationType.God)
         {
-            return new GodRequest(buildingInfo, RequestWeights, schedulingParams);
+            return new GodRequest(buildingInfo, workerStats, importance, currentDay);
         }
                 
         else

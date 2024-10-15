@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class RequestManager : MonoBehaviour
 {
-    public float buildTimeWeight, buildCostWeight, importanceWeight;
+    
+    public int currentDay;
+    public StatsManager statsManager;
 
     Dictionary<int, Queue<GenericRequest>> requests;
 
@@ -22,9 +24,10 @@ public class RequestManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.V)) 
         { 
             Bathhouse bathouse = new Bathhouse();
-            RequestWeights reqWeights = new RequestWeights(buildTimeWeight, buildCostWeight, importanceWeight);
+            PlayerWorkerStats workerStats = new PlayerWorkerStats(statsManager.GetStatValue(StatType.workers), statsManager.GetStatValue(StatType.productivity));
             SchedulingParams schedulingParams = new SchedulingParams(1, 30);
-            KingRequest newKingRequest =  (KingRequest)RequestFactory.CreateRequestWithRelation(bathouse, reqWeights, schedulingParams, RelationType.King);
+
+            KingRequest newKingRequest =  (KingRequest)RequestFactory.CreateRequestWithRelation(bathouse, workerStats, currentDay, RelationType.King);
 
 
             Debug.Log($"newKingRequest has reward of {newKingRequest.GetReward()} and an importance value of {newKingRequest.importance} and scheduled for {newKingRequest.deadline}");
