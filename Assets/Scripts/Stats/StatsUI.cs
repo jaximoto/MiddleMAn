@@ -44,6 +44,9 @@ public class StatsUI : MonoBehaviour
                 workerText.text = $"Worker: {amount}";
                 break;
 
+			case StatType.workers:
+				break;
+
             case StatType.productivity:
                 productivityText.text = $"Productivity: {amount}%";
                 break;

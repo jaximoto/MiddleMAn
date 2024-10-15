@@ -93,13 +93,16 @@ public class StatsManager : MonoBehaviour
 	{
 		// Money based on king affinity
 		int kingApt = GetRelationAptitude(RelationType.King);
-		//ChangeStat(StatType.money, (kingApt - 50) * 100);
+		ChangeStat(StatType.money, (kingApt - 50) * 100);
 
 		// Productivity based on worker Affinity
 		int workerApt = GetRelationAptitude(RelationType.Workers);
 		ChangeStat(StatType.productivity, (int)System.Math.Ceiling((workerApt-50) * 0.25));
 
 		//God works in mysterious ways
+		int godApt = GetRelationAptitude(RelationType.God);
+		ChangeStat(StatType.workers, (int)System.Math.Ceiling((godApt-50) * 0.25));
+		ChangeStat(StatType.availableWorkers, (int)System.Math.Ceiling((godApt-50) * 0.25));
 
 
 	}
