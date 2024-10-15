@@ -8,7 +8,7 @@ using Buildings;
 
 public class BuildingModel
 {
-	public string[] buildingNames = {"Bathhouse", "Castle"};
+	public string[] buildingNames = {"Bathhouse", "Castle", "Monument"};
 	public CircularList<string> buildingOptions;
 
 	public Dictionary<Vector3Int, Building> buildings;
@@ -16,8 +16,10 @@ public class BuildingModel
 	public HashSet<Vector3Int> occupiedTiles;
 
 	public Building dummyBuilding;
+
 	public Bathhouse dummyBathhouse; //This sucks
 	public Castle dummyCastle;
+	public Monument dummyMonument;
 
 	public string equippedBuildingName;
 	
@@ -33,11 +35,13 @@ public class BuildingModel
 
 		this.dummyBathhouse = new Bathhouse();
 		this.dummyCastle = new Castle();
+		this.dummyMonument = new Monument();
 
 		this.buildingsMap = new()
 		{
 			{ buildingNames[0], this.dummyBathhouse},
-			{ buildingNames[1], this.dummyCastle}
+			{ buildingNames[1], this.dummyCastle},
+			{ buildingNames[2], this.dummyMonument}
 		};
 
 		this.lastHighlightedCell = new Vector3Int(-100000000, -10000000, 0);

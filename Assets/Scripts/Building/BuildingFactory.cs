@@ -18,6 +18,10 @@ public class BuildingFactory
 		{
 			return new Castle(pos, tilemap);
 		}
+		else if (name.Equals("Monument"))
+		{
+			return new Monument(pos, tilemap);
+		}
 		else
 		{
 			return new Bathhouse(pos, tilemap);
