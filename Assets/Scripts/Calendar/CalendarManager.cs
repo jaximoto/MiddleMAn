@@ -10,6 +10,7 @@ public class CalendarManager : MonoBehaviour
     Calendar calendar;
     public RequestManager requestManager;
     public CalendarView calendarHudUI;
+    public List<Sprite> monthSprites;
     // building mapped to list of due dates
     public Dictionary<string, List<int>> BuildingToDay = new();
     public List<RelationType> RelationTypes;

@@ -147,9 +147,9 @@ TextureImporter:
       name: CalendarYearNums_1
       rect:
         serializedVersion: 2
-        x: 45
+        x: 25
         y: 0
-        width: 6
+        width: 25
         height: 43
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
