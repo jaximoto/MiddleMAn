@@ -45,8 +45,8 @@ public class CalendarManager : MonoBehaviour
             foreach(string key in requestManager.requestDictionary[calendar.day].Keys)
             {
                 statsManager.ChangeAptitude(requestManager.requestDictionary[calendar.day][key].relationType, requestManager.requestDictionary[calendar.day][key].GetPenalty());
-
-                if (statsManager.playerRelations[requestManager.requestDictionary[calendar.day][key].relationType].affinity <= 0)
+                //playerRelations[requestManager.requestDictionary[calendar.day][key].relationType].affinity <= 0
+                if (statsManager.CheckLose())
                 {
                     Debug.Log("You lose the game");
                 }
