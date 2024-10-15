@@ -6,6 +6,7 @@ public class CalendarManager : MonoBehaviour
 {
     Calendar calendar;
     public RequestManager requestManager;
+    public CalendarView calendarHudUI;
     private void Awake()
     {
         calendar = new Calendar();
@@ -31,13 +32,16 @@ public class CalendarManager : MonoBehaviour
             CreateRequest("Castle", RelationType.King);
         }
     }
-    void NextDay()
+    public void EndDay()
     {
         calendar.NextDay();
 
         // Update requestManager
         requestManager.currentDay = calendar.day;
         requestManager.maxDayInMonth = calendar.daysInCurrentMonth;
+
+        // Update UI
+        calendarHudUI.UpdateDay(calendar.day);
     }
 
     private void CreateRequest(string buildingName, RelationType relationType)
