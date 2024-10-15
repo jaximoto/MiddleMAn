@@ -9,6 +9,7 @@ public class RequestManager : MonoBehaviour
 {
     
     public int currentDay;
+    public int maxDayInMonth;
     public StatsManager statsManager;
 
     // Day : dict<requestID, request>
@@ -36,8 +37,8 @@ public class RequestManager : MonoBehaviour
         workerStats = new PlayerWorkerStats(statsManager.GetStatValue(StatType.workers), statsManager.GetStatValue(StatType.productivity));
         //KingRequest newKingRequest = (KingRequest)RequestFactory.CreateRequestWithRelation(buildingDict["Bathhouse"], workerStats, currentDay, RelationType.King);
 
-        AddRequest("Bathhouse", RelationType.God);
-        
+        //AddRequest("Bathhouse", RelationType.God);
+        //AddRequest("Castle", RelationType.King);
         //Debug.Log($"newKingRequest has reward of {requestDictionary[request.deadline][request.requestID].GetReward()} and an importance value of {newKingRequest.importance} and scheduled for {newKingRequest.deadline}");
     }
     private void Update()
@@ -55,34 +56,41 @@ public class RequestManager : MonoBehaviour
         }
     }
 
-    public int AddRequest(string buildingType, RelationType relationType)
+    public RequestInfo AddRequest(string buildingType, RelationType relationType)
     {
         if (!buildingDict.ContainsKey(buildingType))
         {
             Debug.LogError($"Error, Building dict does not contain key {buildingType}");
-            return -1;
+            return null;
         }
 
         // Make sure there is not more than 3 requests in day
         GenericRequest request = RequestFactory.CreateRequestWithRelation(buildingDict[buildingType], workerStats, currentDay, relationType);
+
+        if (request.deadline > maxDayInMonth)
+        {
+            Debug.Log($"Request has deadline: {request.deadline} which is greater than {maxDayInMonth}");
+            return null;
+        }
+            
 
         if (requestDictionary.ContainsKey(currentDay))
         {
             if (requestDictionary[request.deadline].Count == 3)  
             {
                 Debug.Log($"Only 3 requests can be made on a day, there are currently {requestDictionary[request.deadline].Count} requests on day: {request.deadline}");
-                return -1;
+                return null;
             }
             // If it already has a key and has less than 3 items in inner dict
             requestDictionary[request.deadline].Add(request.requestID, request);
-            return request.requestID;
+            return new RequestInfo(request.deadline, request.requestID);
         }
 
         requestDictionary[request.deadline] = new Dictionary<int, GenericRequest>();
         requestDictionary[request.deadline][request.requestID] = request;
 
         Debug.Log($"Added request {requestDictionary[request.deadline][request.requestID].requestID}");
-        return request.requestID;
+        return new RequestInfo(request.deadline, request.requestID);
 
     }
 }

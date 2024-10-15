@@ -17,6 +17,19 @@ public enum ImportanceFactor
     Unimportant = 9,   // Level 9
     Negligible = 10    // Level 10
 }
+
+public class RequestInfo
+{
+    public int reqID;
+    public int dayScheduled;
+
+    public RequestInfo(int dayScheduled, int reqID)
+    {
+        this.dayScheduled = dayScheduled;
+        this.reqID = reqID;
+    }
+
+}
 public class GenericRequest
 {
     public int requestID;
