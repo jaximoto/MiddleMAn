@@ -19,6 +19,10 @@ public class BuildingController : MonoBehaviour
 	public Tilemap tilemap;
 	public StatsManager statsManager;
 
+	public Building currentBuilding;
+
+	public TMP_InputField workerAllocator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,15 +32,18 @@ public class BuildingController : MonoBehaviour
 
 	void Update()
 	{
-		HighlightTile();
 
 		EquipBuilding();
 
 		if (Input.GetMouseButtonDown(0)) //TODO Need some way to make it so the fucking player cant just spam click like a fucking monkey
 		{
-			//TODO: Check to see if can click by talking to other systems
 			HandleClick();
 		}
+
+		HighlightTile();
+
+		if (currentBuilding!=null)
+			view.RefreshBuildingUI(currentBuilding);
 	}
 
 
@@ -74,7 +81,7 @@ public class BuildingController : MonoBehaviour
 	{
 		string currentBuildingName = model.buildingOptions.Current();
 		Building b = BuildingFactory.MakeBuilding(currentBuildingName, pos, tilemap);
-		if (CheckMoney(b))
+		if (CheckStats(b))
 		{
 			model.AddBuilding(b);
 			view.UpdateBuilding(b);
@@ -87,15 +94,17 @@ public class BuildingController : MonoBehaviour
 	}
 
 
-	public bool CheckMoney(Building b)
+	public bool CheckStats(Building b)
 	{
-		return b.moneyCost <= statsManager.GetStatValue(StatType.money);
+		bool enoughMoney = b.moneyCost <= statsManager.GetStatValue(StatType.money);
+		return enoughMoney; 
 	}
 
 
 	public void MakeBuildingModifyStats(Building b)
 	{
 		statsManager.ChangeStat(StatType.money, -b.moneyCost);
+		//TODO: Change active workers
 	}
 
 
@@ -115,6 +124,14 @@ public class BuildingController : MonoBehaviour
 
 		Vector3Int clickedCell = GetTileCoordinates();
 
+		// First, am I clicking a building?
+
+		if (model.occupiedTiles.Contains(clickedCell))
+		{
+			HandleClickBuilding(model.buildings[clickedCell]);
+			return;
+		}
+
 		// Coordinates this building will occupy
 		List<Vector3Int> coords = model.buildingsMap[model.equippedBuildingName].EnumerateCoordinates(clickedCell);
 
@@ -124,7 +141,6 @@ public class BuildingController : MonoBehaviour
 		//Check to see if building spills onto an occupied tile 
 		if (model.CheckForBuilding(coords))
 		{
-			//If yes, do nothing/bring up some UI thing
 		}
 		else 
 		{
@@ -132,6 +148,52 @@ public class BuildingController : MonoBehaviour
 			MakeBuilding(clickedCell);
 		}
 		
+	}
+
+
+	public void HandleClickBuilding(Building b)
+	{
+		currentBuilding = b;
+	}
+
+
+	public void AllocateWorkers()
+	{
+		if (currentBuilding==null) return;
+
+	  	if (currentBuilding.IsDone()) 
+		{
+			view.UpdateNotifyText("This building is done");
+		}
+
+		int newWorkers = -1;
+		bool validInput = System.Int32.TryParse(workerAllocator.text, out newWorkers);
+
+		if (newWorkers < 0)
+		{
+			view.UpdateNotifyText("Number must be positive");
+			return;
+		}
+
+		if (validInput)
+		{
+			if (newWorkers > statsManager.GetStatValue(StatType.availableWorkers))
+			{
+				view.UpdateNotifyText("You don't have enough workers");
+			}
+			else
+			{
+				int workerDiff = (newWorkers - currentBuilding.assignedWorkers);
+				currentBuilding.assignedWorkers = newWorkers;
+				statsManager.ChangeStat(StatType.availableWorkers, -workerDiff);
+			}
+		}
+		else
+		{
+			view.UpdateNotifyText("Just put a number and nothing else in");
+		}
+
+		view.ClearWorkerAllocator();
 	}
 
 
@@ -144,20 +206,26 @@ public class BuildingController : MonoBehaviour
 	}	
 
 
-	private float ComputeProgress()
+	private float ComputeProgress(Building b)
 	{
-		return statsManager.GetStatValue(StatType.workers) * statsManager.GetStatValue(StatType.productivity);
+		return b.assignedWorkers * statsManager.GetStatValue(StatType.productivity);
 	}
 
 
 	public void AdvanceBuildingStates()
 	{
 		//TODO
-		float progress = ComputeProgress();
 		foreach (Building b in model.buildings.Values)
 		{
+			float progress = ComputeProgress(b);
 			b.AdvanceState(progress);
 			view.UpdateBuilding(b); 
+
+			if (b.IsDone())
+			{
+				statsManager.ChangeStat(StatType.availableWorkers, b.assignedWorkers);
+				b.assignedWorkers = 0;
+			}
 		}
 	}
 

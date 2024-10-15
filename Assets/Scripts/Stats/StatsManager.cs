@@ -30,7 +30,7 @@ public class StatsManager : MonoBehaviour
 
         playerStats.Add(StatType.money, new IntStat(StatType.money, money));
         playerStats.Add(StatType.workers, new IntStat(StatType.workers, workers));
-        playerStats.Add(StatType.availableWorkers, new IntStat(StatType.availableWorkers, availableWorkers));
+        playerStats.Add(StatType.availableWorkers, new IntStat(StatType.availableWorkers, workers));
         playerStats.Add(StatType.productivity, new ClampedStat(StatType.productivity, productivity));
 
         
