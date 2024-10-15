@@ -11,21 +11,25 @@ public class CalendarView : MonoBehaviour
 	public TextMeshProUGUI notificationText;
     
 	public List<Sprite> dayNumbers = new();
+	public List<Sprite> taskBackgrounds = new();
 	public CalendarManager calendarManager;
+	public RequestManager requestManager;
 
 	public GameObject calendarUI;
 	public GameObject dayContainer;
 	float startingX = 461;
 	float startingY = 540;
 
-	
+	float taskboxStartingX = -154;
+	float taskboxStartingY = 74;	
 	public void SetupCalendarUI(int daysInMonth)
 	{
 		GameObject parentObject = new GameObject("DaysParent");
 		parentObject.transform.SetParent(calendarUI.transform);
 		float currentX = startingX;
 		float currentY = startingY;
-		for (int i = 1; i < daysInMonth; i++)
+
+		for (int i = 1; i < daysInMonth + 1; i++)
 		{
 			GameObject tmp = Instantiate(dayContainer, new Vector3(currentX, currentY, 1), Quaternion.identity);
 			
@@ -46,6 +50,12 @@ public class CalendarView : MonoBehaviour
 				currentX = startingX;
 			}
 		}
+	}
+
+	public void AddRequestToCalendar(RequestInfo requestInfo)
+	{
+		GenericRequest tmp = requestManager.requestDictionary[requestInfo.dayScheduled][requestInfo.buildingName];
+
 	}
 
 	

@@ -49,6 +49,7 @@ public class CalendarManager : MonoBehaviour
     {
         // Get the key and update the Calendar UI with the key
         RequestInfo reqKey = requestManager.AddRequest(buildingName, relationType);
+
     }
     
 }

@@ -20,19 +20,20 @@ public enum ImportanceFactor
 
 public class RequestInfo
 {
-    public int reqID;
+    public string buildingName;
     public int dayScheduled;
 
-    public RequestInfo(int dayScheduled, int reqID)
+    public RequestInfo(int dayScheduled,string buildingName)
     {
         this.dayScheduled = dayScheduled;
-        this.reqID = reqID;
+        this.buildingName = buildingName;
     }
 
 }
 public class GenericRequest
 {
-    public int requestID;
+    public string buildingName;
+    
     public float buildTime;
     public float maxBuildTime;
 
@@ -52,7 +53,7 @@ public class GenericRequest
     public GenericRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
         int currentDay, RelationType relationType)
     {
-        this.requestID = BuildingConstraints.requestId++;
+        this.buildingName = buildingInfo.name;
         this.totalWorkers = workerStats.workers;
         this.productivity = workerStats.productivity;
         this.currentDay = currentDay;

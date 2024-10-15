@@ -14,7 +14,9 @@ public class RequestManager : MonoBehaviour
     public BuildingController buildingController;
 
     // Day : dict<requestID, request>
-    Dictionary<int, Dictionary<int, GenericRequest>> requestDictionary = new();
+    public Dictionary<int, Dictionary<string, GenericRequest>> requestDictionary = new();
+
+    
 
     Dictionary<string, Building> buildingDict;
 
@@ -83,18 +85,23 @@ public class RequestManager : MonoBehaviour
                 return null;
             }
 
+            if (requestDictionary[request.deadline].ContainsKey(request.buildingName))
+            {
+                Debug.Log($"{request.deadline} can only have one building: {request.buildingName} as a key");
+                return null;
+            }
             // If it already has a key and has less than 3 items in inner dict
-            requestDictionary[request.deadline].Add(request.requestID, request);
-            //Debug.Log($"Added request {requestDictionary[request.deadline][request.requestID].requestID} on day {request.deadline} with count: {requestDictionary[request.deadline].Count}");
-            return new RequestInfo(request.deadline, request.requestID);
+            requestDictionary[request.deadline].Add(request.buildingName, request);
+            Debug.Log($"Added request {requestDictionary[request.deadline][request.buildingName].buildingName} on day {request.deadline} with count: {requestDictionary[request.deadline].Count}");
+            return new RequestInfo(request.deadline, request.buildingName);
         }
 
-        requestDictionary[request.deadline] = new Dictionary<int, GenericRequest>();
-        requestDictionary[request.deadline][request.requestID] = request;
+        requestDictionary[request.deadline] = new Dictionary<string, GenericRequest>();
+        requestDictionary[request.deadline][request.buildingName] = request;
 
         
-        //Debug.Log($"Added request {requestDictionary[request.deadline][request.requestID].requestID} on day {request.deadline} with count: {requestDictionary[request.deadline].Count}");
-        return new RequestInfo(request.deadline, request.requestID);
+        Debug.Log($"Added request {requestDictionary[request.deadline][request.buildingName].buildingName} on day {request.deadline} with count: {requestDictionary[request.deadline].Count}");
+        return new RequestInfo(request.deadline, request.buildingName);
 
     }
 }
