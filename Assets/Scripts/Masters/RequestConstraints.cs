@@ -6,6 +6,7 @@ public static class BuildingConstraints
 {
     public static float MaxBuildTime = 10000000f;
     public static int MaxCost = 100000000;
+    public static int requestId = 0;
 }
 
 public class PlayerWorkerStats

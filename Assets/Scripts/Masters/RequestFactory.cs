@@ -17,8 +17,23 @@ public enum ImportanceFactor
     Unimportant = 9,   // Level 9
     Negligible = 10    // Level 10
 }
+
+public class RequestInfo
+{
+    public string buildingName;
+    public int dayScheduled;
+
+    public RequestInfo(int dayScheduled,string buildingName)
+    {
+        this.dayScheduled = dayScheduled;
+        this.buildingName = buildingName;
+    }
+
+}
 public class GenericRequest
 {
+    public string buildingName;
+    
     public float buildTime;
     public float maxBuildTime;
 
@@ -38,6 +53,7 @@ public class GenericRequest
     public GenericRequest(Building buildingInfo, PlayerWorkerStats workerStats, ImportanceFactor importance,
         int currentDay, RelationType relationType)
     {
+        this.buildingName = buildingInfo.name;
         this.totalWorkers = workerStats.workers;
         this.productivity = workerStats.productivity;
         this.currentDay = currentDay;
