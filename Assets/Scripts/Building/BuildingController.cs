@@ -169,6 +169,12 @@ public class BuildingController : MonoBehaviour
 		int newWorkers = -1;
 		bool validInput = System.Int32.TryParse(workerAllocator.text, out newWorkers);
 
+		if (newWorkers < 0)
+		{
+			view.UpdateNotifyText("Number must be positive");
+			return;
+		}
+
 		if (validInput)
 		{
 			if (newWorkers > statsManager.GetStatValue(StatType.availableWorkers))
@@ -177,8 +183,9 @@ public class BuildingController : MonoBehaviour
 			}
 			else
 			{
+				int workerDiff = (newWorkers - currentBuilding.assignedWorkers);
 				currentBuilding.assignedWorkers = newWorkers;
-				statsManager.ChangeStat(StatType.availableWorkers, -newWorkers);
+				statsManager.ChangeStat(StatType.availableWorkers, -workerDiff);
 			}
 		}
 		else
