@@ -11,13 +11,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 67ce75b46b4bd482abe586f30ed8d70a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Julian Scene.unity
     guid: 7955d727128d003438fdddf3fac7cfc1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test Scene.unity
     guid: 0f749cb660d681a48a54f4eb8fefc224
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 261c21905fd844734ab5267f026cb742
+  - enabled: 1
+    path: Assets/Scenes/Main Scene.unity
+    guid: 27daad54a9e14df409444a14608f7474
   m_configObjects: {}

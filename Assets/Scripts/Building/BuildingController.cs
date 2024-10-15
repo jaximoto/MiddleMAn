@@ -178,7 +178,6 @@ public class BuildingController : MonoBehaviour
 
 		if (validInput)
 		{
-			Debug.Log(statsManager.GetStatValue(StatType.availableWorkers));
 			if (newWorkers > statsManager.GetStatValue(StatType.availableWorkers))
 			{
 				view.UpdateNotifyText("You don't have enough workers");

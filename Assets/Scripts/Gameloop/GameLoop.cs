@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 using static StatsManager;
 
 public class GameLoop : MonoBehaviour
@@ -24,15 +25,9 @@ public class GameLoop : MonoBehaviour
     }
 
 
-	void Loop()
+	void StartDay()
 	{
 		// Spawn tasks, display them to player
-
-
-		// Player allocates workers
-		
-
-		// End day when player clicks new button
 	}
 
 
@@ -52,6 +47,10 @@ public class GameLoop : MonoBehaviour
 		if (CheckLose())
 		{
 			SceneManager.LoadScene("GameOver");
+		}
+		else
+		{
+			StartDay();
 		}
 
 	}
