@@ -75,22 +75,25 @@ public class RequestManager : MonoBehaviour
         }
             
 
-        if (requestDictionary.ContainsKey(currentDay))
+        if (requestDictionary.ContainsKey(request.deadline))
         {
-            if (requestDictionary[request.deadline].Count == 3)  
+            if (requestDictionary[request.deadline].Count >= 3)  
             {
                 Debug.Log($"Only 3 requests can be made on a day, there are currently {requestDictionary[request.deadline].Count} requests on day: {request.deadline}");
                 return null;
             }
+
             // If it already has a key and has less than 3 items in inner dict
             requestDictionary[request.deadline].Add(request.requestID, request);
+            //Debug.Log($"Added request {requestDictionary[request.deadline][request.requestID].requestID} on day {request.deadline} with count: {requestDictionary[request.deadline].Count}");
             return new RequestInfo(request.deadline, request.requestID);
         }
 
         requestDictionary[request.deadline] = new Dictionary<int, GenericRequest>();
         requestDictionary[request.deadline][request.requestID] = request;
 
-        Debug.Log($"Added request {requestDictionary[request.deadline][request.requestID].requestID}");
+        
+        //Debug.Log($"Added request {requestDictionary[request.deadline][request.requestID].requestID} on day {request.deadline} with count: {requestDictionary[request.deadline].Count}");
         return new RequestInfo(request.deadline, request.requestID);
 
     }
