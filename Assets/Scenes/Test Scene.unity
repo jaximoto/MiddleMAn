@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 94013232553115403, guid: 06369f7ee9a3c455abeda5c2fb3a93e5, type: 3}
       propertyPath: m_text
-      value: 'Workers
+      value: '
 
 '
       objectReference: {fileID: 0}
@@ -278,7 +278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8510789017182741398, guid: 06369f7ee9a3c455abeda5c2fb3a93e5, type: 3}
       propertyPath: m_text
-      value: Progress
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8510789017182741398, guid: 06369f7ee9a3c455abeda5c2fb3a93e5, type: 3}
       propertyPath: m_fontSize
